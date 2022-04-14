@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using PlanningPoker.Models;
 
 namespace PlanningPoker.Tests;
 

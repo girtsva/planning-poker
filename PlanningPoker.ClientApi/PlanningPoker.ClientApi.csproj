@@ -7,8 +7,18 @@
         <RootNamespace>PlanningPoker</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <NoWarn>1701;1702;1591</NoWarn>
+      <DocumentationFile>bin\Debug\PlanningPoker.ClientApi.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
+      <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>
