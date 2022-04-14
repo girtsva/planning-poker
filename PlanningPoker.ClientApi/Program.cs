@@ -1,5 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using PlanningPoker.Services;
+using PlanningPoker.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,8 @@ builder.Services.AddSwaggerGen(options =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
 });
+
+builder.Services.AddTransient<IGameRoomService, GameRoomService>();
 
 var app = builder.Build();
 

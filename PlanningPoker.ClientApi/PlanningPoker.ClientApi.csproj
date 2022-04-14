@@ -19,6 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
       <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
+      <ProjectReference Include="..\PlanningPoker.Services\PlanningPoker.Services.csproj" />
     </ItemGroup>
 
 </Project>

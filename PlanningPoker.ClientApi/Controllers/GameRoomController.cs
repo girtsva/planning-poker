@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using PlanningPoker.Data;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
@@ -19,16 +18,18 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Creates a new game room.
     /// </summary>
+    /// <response code="201">Created: confirms the room is created and returns room's name</response>
+    /// <response code="409">Conflict: if room with the specified name already exists</response>
     [HttpPut]
     [Route("create")]
     public IActionResult CreateGameRoom(string roomName)
     {
-        if (DataRepository.Exists(roomName))
+        if (_gameRoomService.RoomNameExists(roomName))
         {
             return Conflict();
         }
         
-        _gameRoomService.CreateGameRoom(new GameRoom(roomName));
+        _gameRoomService.CreateGameRoom(roomName, new GameRoom(roomName));
         
         return Created("", roomName);
     }
@@ -41,5 +42,17 @@ public class GameRoomController : ControllerBase
     public IActionResult ListRooms()
     {
         return Ok(_gameRoomService.ListGameRooms());
+    }
+    
+    /// <summary>
+    /// Deletes all rooms.
+    /// </summary>
+    [HttpDelete]
+    [Route("clear")]
+    public IActionResult ClearAllRooms()
+    {
+        _gameRoomService.ClearAllRooms();
+        
+        return Ok();
     }
 }

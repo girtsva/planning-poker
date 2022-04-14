@@ -5,10 +5,11 @@ namespace PlanningPoker.Data;
 public class DataRepository
 {
     //public static ICollection<Player> Players = new List<Player>();
-    public static readonly ICollection<GameRoom> GameRooms = new List<GameRoom>();
+    public static readonly IDictionary<string, GameRoom> GameRooms = new Dictionary<string, GameRoom>();
 
-    public bool Exists(string name)
-    {
-        return GameRooms.Any(room => room.Name.ToLower().Trim() == name.ToLower().Trim());
-    }
+    // public static readonly ICollection<GameRoom> GameRooms = new List<GameRoom>();
+    // public bool Exists(string name)
+    // {
+    //     return GameRooms.Any(room => room.Name.ToLower().Trim() == name.ToLower().Trim());
+    // }
 }
