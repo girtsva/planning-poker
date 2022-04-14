@@ -23,7 +23,7 @@ public class GameRoomController : ControllerBase
     [Route("create")]
     public IActionResult CreateGameRoom(string roomName)
     {
-        if (DataStorage.Exists(roomName))
+        if (DataRepository.Exists(roomName))
         {
             return Conflict();
         }

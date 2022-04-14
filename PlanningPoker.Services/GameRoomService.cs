@@ -8,12 +8,12 @@ public class GameRoomService : IGameRoomService
 {
     public void CreateGameRoom(GameRoom room)
     {
-        DataStorage.GameRooms.Add(room);
+        DataRepository.GameRooms.Add(room);
     }
 
     public ICollection<GameRoom> ListGameRooms()
     {
-        return DataStorage.GameRooms;
+        return DataRepository.GameRooms;
     }
 
     public void AddPlayer(Player name)

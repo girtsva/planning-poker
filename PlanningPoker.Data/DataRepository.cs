@@ -1,8 +1,8 @@
 ﻿using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
-
-public class DataStorage
+//[UsedImplicitly]
+public class DataRepository
 {
     //public static ICollection<Player> Players = new List<Player>();
     public static readonly ICollection<GameRoom> GameRooms = new List<GameRoom>();
