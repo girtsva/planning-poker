@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>PlanningPoker.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
