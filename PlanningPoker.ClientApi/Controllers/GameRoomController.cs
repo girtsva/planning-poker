@@ -18,8 +18,11 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Creates a new game room.
     /// </summary>
+    /// <param name="roomName">The desired name of the room to create</param>
     /// <response code="201">Created: confirms the room is created and returns room's name</response>
     /// <response code="409">Conflict: if room with the specified name already exists</response>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     [HttpPut]
     [Route("create")]
     public IActionResult CreateGameRoom(string roomName)
@@ -45,6 +48,28 @@ public class GameRoomController : ControllerBase
     }
     
     /// <summary>
+    /// Gets the game room by its name.
+    /// </summary>
+    /// <param name="name">The name of the room to search for</param>
+    /// <response code="200">Success: Returns the found room</response>
+    /// <response code="404">Not Found: if room with the specified name does not exist</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet]
+    [Route("list/{name}")]
+    public IActionResult ShowRoomByName(string name)
+    {
+        var room = _gameRoomService.GetGameRoomByName(name);
+        
+        if (room == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(room);
+    }
+    
+    /// <summary>
     /// Deletes all rooms.
     /// </summary>
     [HttpDelete]
@@ -54,5 +79,27 @@ public class GameRoomController : ControllerBase
         _gameRoomService.ClearAllRooms();
         
         return Ok();
+    }
+    
+    /// <summary>
+    /// Deletes the game room by its name.
+    /// </summary>
+    /// <param name="name">The name of the room to delete</param>
+    /// <response code="200">Success: Specified room is deleted</response>
+    /// <response code="404">Not Found: if room with the specified name does not exist</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet]
+    [Route("clear/{name}")]
+    public IActionResult DeleteRoomByName(string name)
+    {
+        if (!_gameRoomService.RoomNameExists(name))
+        {
+            return NotFound();
+        }
+
+        _gameRoomService.DeleteRoom(name);
+
+        return Ok($"Room {name} deleted");
     }
 }

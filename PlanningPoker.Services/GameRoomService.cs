@@ -6,6 +6,13 @@ namespace PlanningPoker.Services;
 
 public class GameRoomService : IGameRoomService
 {
+    private readonly GameRoom _gameRoom;
+
+    public GameRoomService(GameRoom gameRoom)
+    {
+        _gameRoom = gameRoom;
+    }
+
     public void CreateGameRoom(string roomName, GameRoom room)
     {
         DataRepository.GameRooms.Add(roomName, room);
@@ -15,10 +22,15 @@ public class GameRoomService : IGameRoomService
     {
         return DataRepository.GameRooms.Values;
     }
+    
+    public GameRoom GetGameRoomByName(string roomName)
+    {
+        return DataRepository.GameRooms.FirstOrDefault(kvp=> kvp.Key.Contains(roomName)).Value;
+    }
 
     public void AddPlayer(Player name)
     {
-        throw new NotImplementedException();
+        _gameRoom.Players.Add(name);
     }
 
     public ICollection<Player> ListUsers()
@@ -34,5 +46,10 @@ public class GameRoomService : IGameRoomService
     public void ClearAllRooms()
     {
         DataRepository.GameRooms.Clear();
+    }
+
+    public void DeleteRoom(string roomName)
+    {
+        DataRepository.GameRooms.Remove(roomName);
     }
 }
