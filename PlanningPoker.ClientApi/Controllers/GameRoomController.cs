@@ -73,10 +73,10 @@ public class GameRoomController : ControllerBase
     /// Deletes all rooms.
     /// </summary>
     [HttpDelete]
-    [Route("clear")]
-    public IActionResult ClearAllRooms()
+    [Route("delete")]
+    public IActionResult DeleteAllRooms()
     {
-        _gameRoomService.ClearAllRooms();
+        _gameRoomService.DeleteAllRooms();
         
         return Ok();
     }
@@ -90,7 +90,7 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
-    [Route("clear/{name}")]
+    [Route("delete/{name}")]
     public IActionResult DeleteRoomByName(string name)
     {
         if (!_gameRoomService.RoomNameExists(name))

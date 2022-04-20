@@ -46,9 +46,9 @@ public class GameRoomService : IGameRoomService
         return _dataRepository.RoomNameExists(roomName);
     }
 
-    public void ClearAllRooms()
+    public void DeleteAllRooms()
     {
-        _dataRepository.ClearAllRooms();
+        _dataRepository.DeleteAllRooms();
     }
 
     public void DeleteRoom(string roomName)

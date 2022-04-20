@@ -10,6 +10,6 @@ public interface IGameRoomService
     // public void AddPlayer(Player name);
     public ICollection<Player> ListUsers();
     public bool RoomNameExists(string roomName);
-    public void ClearAllRooms();
+    public void DeleteAllRooms();
     public void DeleteRoom(string roomName);
 }

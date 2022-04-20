@@ -9,6 +9,6 @@ public interface IDataRepository
     GameRoom? GetGameRoomByName(string roomName);
     ICollection<Player> ListUsers();
     bool RoomNameExists(string roomName);
-    void ClearAllRooms();
+    void DeleteAllRooms();
     void DeleteRoom(string roomName);
 }

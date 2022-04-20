@@ -38,7 +38,7 @@ public class DataRepository : IDataRepository
         return GameRooms.ContainsKey(roomName);
     }
 
-    public void ClearAllRooms()
+    public void DeleteAllRooms()
     {
         GameRooms.Clear();
     }
