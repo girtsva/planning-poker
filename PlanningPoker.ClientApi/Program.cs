@@ -29,6 +29,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddTransient<IGameRoomService, GameRoomService>();
 builder.Services.AddTransient<IDataRepository, DataRepository>();
+//builder.Services.AddSingleton<IDataRepository, DataRepository>();
+//builder.Services.AddScoped<IDataRepository, DataRepository>();
 
 var app = builder.Build();
 

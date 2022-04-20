@@ -1,10 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
 namespace PlanningPoker.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class GameRoomController : ControllerBase
 {
@@ -23,9 +24,9 @@ public class GameRoomController : ControllerBase
     /// <response code="409">Conflict: if room with the specified name already exists</response>
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [HttpPut]
-    [Route("create")]
-    public IActionResult CreateGameRoom(string roomName)
+    [HttpPut] //HttpPost
+    //[Route("create")]
+    public IActionResult Create([Required]string roomName)
     {
         if (_gameRoomService.RoomNameExists(roomName))
         {
@@ -41,7 +42,7 @@ public class GameRoomController : ControllerBase
     /// Gets the list of game rooms.
     /// </summary>
     [HttpGet]
-    [Route("list")]
+    //[Route("list")]
     public IActionResult ListRooms()
     {
         return Ok(_gameRoomService.ListGameRooms());
@@ -56,8 +57,8 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
-    [Route("list/{name}")]
-    public IActionResult ShowRoomByName(string name)
+    [Route("{name}")]
+    public IActionResult ShowRoom(string name)
     {
         var room = _gameRoomService.GetGameRoomByName(name);
 
@@ -68,8 +69,8 @@ public class GameRoomController : ControllerBase
     /// Deletes all rooms.
     /// </summary>
     [HttpDelete]
-    [Route("delete")]
-    public IActionResult DeleteAllRooms()
+    //[Route("delete")]
+    public IActionResult DeleteAll()
     {
         _gameRoomService.DeleteAllRooms();
         
@@ -84,9 +85,9 @@ public class GameRoomController : ControllerBase
     /// <response code="404">Not Found: if room with the specified name does not exist</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpGet]
-    [Route("delete/{name}")]
-    public IActionResult DeleteRoomByName(string name)
+    [HttpDelete]
+    [Route("{name}")]
+    public IActionResult DeleteRoom(string name)
     {
         if (!_gameRoomService.RoomNameExists(name))
         {
