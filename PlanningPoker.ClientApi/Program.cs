@@ -1,5 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using PlanningPoker.Data;
+using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Services;
 using PlanningPoker.Services.Interfaces;
 
@@ -26,6 +28,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddTransient<IGameRoomService, GameRoomService>();
+builder.Services.AddTransient<IDataRepository, DataRepository>();
 
 var app = builder.Build();
 
@@ -36,7 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

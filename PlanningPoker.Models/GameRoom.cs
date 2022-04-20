@@ -12,6 +12,12 @@ public class GameRoom
 
     public GameRoom(string name)
     {
+        Id = GenerateRandomId();
+        Name = name;
+    }
+
+    private static string GenerateRandomId()
+    {
         StringBuilder builder = new StringBuilder();
         Enumerable
             .Range(65, 26)
@@ -20,8 +26,6 @@ public class GameRoom
             .OrderBy(e => Guid.NewGuid())
             .Take(10)
             .ToList().ForEach(e => builder.Append(e));
-        
-        Id = builder.ToString();
-        Name = name;
+        return builder.ToString();
     }
 }

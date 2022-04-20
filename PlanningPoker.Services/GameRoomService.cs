@@ -1,4 +1,5 @@
 ﻿using PlanningPoker.Data;
+using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
@@ -6,32 +7,34 @@ namespace PlanningPoker.Services;
 
 public class GameRoomService : IGameRoomService
 {
-    private readonly GameRoom _gameRoom;
+    //private readonly GameRoom _gameRoom;
+    private readonly IDataRepository _dataRepository;
 
-    public GameRoomService(GameRoom gameRoom)
+    public GameRoomService(IDataRepository dataRepository)
     {
-        _gameRoom = gameRoom;
+        _dataRepository = dataRepository;
+        //_gameRoom = gameRoom;
     }
 
     public void CreateGameRoom(string roomName, GameRoom room)
     {
-        DataRepository.GameRooms.Add(roomName, room);
+        _dataRepository.CreateGameRoom(roomName, room);
     }
 
     public ICollection<GameRoom> ListGameRooms()
     {
-        return DataRepository.GameRooms.Values;
+        return _dataRepository.ListGameRooms();
     }
     
-    public GameRoom GetGameRoomByName(string roomName)
+    public GameRoom? GetGameRoomByName(string roomName)
     {
-        return DataRepository.GameRooms.FirstOrDefault(kvp=> kvp.Key.Contains(roomName)).Value;
+        return _dataRepository.GetGameRoomByName(roomName);
     }
 
-    public void AddPlayer(Player name)
-    {
-        _gameRoom.Players.Add(name);
-    }
+    // public void AddPlayer(Player name)
+    // {
+    //     _gameRoom.Players.Add(name);
+    // }
 
     public ICollection<Player> ListUsers()
     {
@@ -40,16 +43,16 @@ public class GameRoomService : IGameRoomService
 
     public bool RoomNameExists(string roomName)
     {
-        return DataRepository.GameRooms.ContainsKey(roomName);
+        return _dataRepository.RoomNameExists(roomName);
     }
 
     public void ClearAllRooms()
     {
-        DataRepository.GameRooms.Clear();
+        _dataRepository.ClearAllRooms();
     }
 
     public void DeleteRoom(string roomName)
     {
-        DataRepository.GameRooms.Remove(roomName);
+        _dataRepository.DeleteRoom(roomName);
     }
 }

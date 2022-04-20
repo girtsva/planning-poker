@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Services", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Data", "PlanningPoker.Data\PlanningPoker.Data.csproj", "{5382088B-8FB7-499C-B918-4A90EF858497}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Data.Interfaces", "PlanningPoker.Data.Interfaces\PlanningPoker.Data.Interfaces.csproj", "{2446EA88-5629-4CE9-8C59-FF884E3B057F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{5382088B-8FB7-499C-B918-4A90EF858497}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5382088B-8FB7-499C-B918-4A90EF858497}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5382088B-8FB7-499C-B918-4A90EF858497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2446EA88-5629-4CE9-8C59-FF884E3B057F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2446EA88-5629-4CE9-8C59-FF884E3B057F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2446EA88-5629-4CE9-8C59-FF884E3B057F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2446EA88-5629-4CE9-8C59-FF884E3B057F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,15 +1,50 @@
-﻿using PlanningPoker.Models;
+﻿using PlanningPoker.Data.Interfaces;
+using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
 //[UsedImplicitly]
-public class DataRepository
+public class DataRepository : IDataRepository
 {
     //public static ICollection<Player> Players = new List<Player>();
-    public static readonly IDictionary<string, GameRoom> GameRooms = new Dictionary<string, GameRoom>();
+    private static readonly IDictionary<string, GameRoom> GameRooms = new Dictionary<string, GameRoom>();
 
-    // public static readonly ICollection<GameRoom> GameRooms = new List<GameRoom>();
-    // public bool Exists(string name)
+    public void CreateGameRoom(string roomName, GameRoom room)
+    {
+        GameRooms.Add(roomName, room);
+    }
+
+    public ICollection<GameRoom> ListGameRooms()
+    {
+        return GameRooms.Values;
+    }
+    
+    public GameRoom? GetGameRoomByName(string roomName)
+    {
+        return GameRooms.ContainsKey(roomName) ? GameRooms[roomName] : null;
+    }
+
+    // public void AddPlayer(Player name)
     // {
-    //     return GameRooms.Any(room => room.Name.ToLower().Trim() == name.ToLower().Trim());
+    //     _gameRoom.Players.Add(name);
     // }
+
+    public ICollection<Player> ListUsers()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool RoomNameExists(string roomName)
+    {
+        return GameRooms.ContainsKey(roomName);
+    }
+
+    public void ClearAllRooms()
+    {
+        GameRooms.Clear();
+    }
+
+    public void DeleteRoom(string roomName)
+    {
+        GameRooms.Remove(roomName);
+    }
 }
