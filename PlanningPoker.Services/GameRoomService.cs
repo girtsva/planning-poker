@@ -1,5 +1,4 @@
-﻿using PlanningPoker.Data;
-using PlanningPoker.Data.Interfaces;
+﻿using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 

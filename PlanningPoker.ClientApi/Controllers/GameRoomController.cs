@@ -60,13 +60,8 @@ public class GameRoomController : ControllerBase
     public IActionResult ShowRoomByName(string name)
     {
         var room = _gameRoomService.GetGameRoomByName(name);
-        
-        if (room == null)
-        {
-            return NotFound();
-        }
 
-        return Ok(room);
+        return room == null ? NotFound() : Ok(room);
     }
     
     /// <summary>

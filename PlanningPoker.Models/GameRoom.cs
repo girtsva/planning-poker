@@ -4,7 +4,7 @@ namespace PlanningPoker.Models;
 
 public class GameRoom
 {
-    public string Id { get; set; }   // random 10 letters on room creating
+    public string Id { get; init; }   // random 10 letters on room creating
     public string Name { get; set; }
 
     public ICollection<Player> Players { get; set; } = new List<Player>();
