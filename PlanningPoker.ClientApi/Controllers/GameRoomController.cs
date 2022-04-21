@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
 namespace PlanningPoker.Controllers;
