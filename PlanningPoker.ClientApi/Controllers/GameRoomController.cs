@@ -20,11 +20,11 @@ public class GameRoomController : ControllerBase
     /// Creates a new game room.
     /// </summary>
     /// <param name="roomName">The desired name of the room to create</param>
-    /// <response code="201">Created: confirms the room is created and returns room's name</response>
+    /// <response code="201">Created: confirms the room is created and returns game room object</response>
     /// <response code="409">Conflict: if room with the specified name already exists</response>
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [HttpPut] //HttpPost
+    [HttpPost] //HttpPost more appropriate than HttpPut
     //[Route("create")]
     public IActionResult Create([Required]string roomName)
     {
@@ -33,9 +33,9 @@ public class GameRoomController : ControllerBase
             return Conflict();
         }
         
-        _gameRoomService.CreateGameRoom(roomName, new GameRoom(roomName));
+        var gameRoom = _gameRoomService.CreateGameRoom(roomName);
         
-        return Created("", roomName);
+        return Created("", gameRoom);
     }
     
     /// <summary>

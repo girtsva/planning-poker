@@ -8,8 +8,7 @@ public interface IGameRoomService
     /// Creates a new game room in the data repository.
     /// </summary>
     /// <param name="roomName">The desired name of the game room.</param>
-    /// <param name="room">The internal naming of GameRoom instance.</param>
-    public void CreateGameRoom(string roomName, GameRoom room);
+    public GameRoom CreateGameRoom(string roomName);
     /// <summary>
     /// Returns a list of created game rooms in the data repository.
     /// </summary>

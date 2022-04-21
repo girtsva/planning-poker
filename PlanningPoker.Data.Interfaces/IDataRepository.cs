@@ -4,7 +4,7 @@ namespace PlanningPoker.Data.Interfaces;
 
 public interface IDataRepository
 {
-    void CreateGameRoom(string roomName, GameRoom room);
+    GameRoom CreateGameRoom(string roomName);
     ICollection<GameRoom> ListGameRooms();
     GameRoom? GetGameRoomByName(string roomName);
     ICollection<Player> ListUsers();

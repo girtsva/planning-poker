@@ -1,6 +1,8 @@
-﻿using PlanningPoker.Data.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
+using Serilog;
 
 namespace PlanningPoker.Services;
 
@@ -8,16 +10,20 @@ public class GameRoomService : IGameRoomService
 {
     //private readonly GameRoom _gameRoom;
     private readonly IDataRepository _dataRepository;
+    private readonly ILogger<GameRoomService> _logger;
 
-    public GameRoomService(IDataRepository dataRepository)
+    public GameRoomService(IDataRepository dataRepository, ILogger<GameRoomService> logger)
     {
         _dataRepository = dataRepository;
+        _logger = logger;
         //_gameRoom = gameRoom;
     }
 
-    public void CreateGameRoom(string roomName, GameRoom room)
+    public GameRoom CreateGameRoom(string roomName)
     {
-        _dataRepository.CreateGameRoom(roomName, room);
+        var gameRoom = _dataRepository.CreateGameRoom(roomName);
+        _logger.LogInformation("Creating room [{RoomName}], room object [{@Room}]", roomName, gameRoom);
+        return gameRoom;
     }
 
     public ICollection<GameRoom> ListGameRooms()

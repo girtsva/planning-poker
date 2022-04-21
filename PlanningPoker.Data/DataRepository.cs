@@ -8,9 +8,11 @@ public class DataRepository : IDataRepository
     //public static ICollection<Player> Players = new List<Player>();
     private static readonly IDictionary<string, GameRoom> GameRooms = new Dictionary<string, GameRoom>();
 
-    public void CreateGameRoom(string roomName, GameRoom room)
+    public GameRoom CreateGameRoom(string roomName)
     {
-        GameRooms.Add(roomName, room);
+        var gameRoom = new GameRoom(roomName);
+        GameRooms.Add(roomName, gameRoom);
+        return gameRoom;
     }
 
     public ICollection<GameRoom> ListGameRooms()
