@@ -2,6 +2,7 @@
 using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
+
 //[UsedImplicitly]
 public class DataRepository : IDataRepository
 {
@@ -19,7 +20,7 @@ public class DataRepository : IDataRepository
     {
         return GameRooms.Values;
     }
-    
+
     public GameRoom? GetGameRoomByName(string roomName)
     {
         return GameRooms.ContainsKey(roomName) ? GameRooms[roomName] : null;

@@ -31,7 +31,7 @@ public class GameRoomService : IGameRoomService
         _logger.LogInformation("Receiving room objects [{@Rooms}]", gameRooms);
         return gameRooms;
     }
-    
+
     public GameRoom? GetGameRoomByName(string roomName)
     {
         var gameRoom = _dataRepository.GetGameRoomByName(roomName);

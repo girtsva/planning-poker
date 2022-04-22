@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <NoWarn>1701;1702;1591</NoWarn>
-      <DocumentationFile>bin\Debug\PlanningPoker.ClientApi.xml</DocumentationFile>
+        <NoWarn>1701;1702;1591</NoWarn>
+        <DocumentationFile>bin\Debug\PlanningPoker.ClientApi.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,9 +22,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
-      <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
-      <ProjectReference Include="..\PlanningPoker.Services\PlanningPoker.Services.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Services\PlanningPoker.Services.csproj" />
     </ItemGroup>
 
 </Project>

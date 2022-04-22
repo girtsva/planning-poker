@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.ClientApi", "PlanningPoker.ClientApi\PlanningPoker.ClientApi.csproj", "{A670C5F1-CB08-41E0-8E2C-015AD660E163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.UnitTests", "PlanningPoker.UnitTests\PlanningPoker.UnitTests.csproj", "{4DEF3382-B3B7-415A-BB4D-FE6130EE0F48}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Services.Interfaces", "PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj", "{ED394586-E4D7-4E95-964B-76217967B1B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Models", "PlanningPoker.Models\PlanningPoker.Models.csproj", "{96F885E5-7C7D-42EA-B589-43D47026294C}"
@@ -26,10 +24,6 @@ Global
 		{A670C5F1-CB08-41E0-8E2C-015AD660E163}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A670C5F1-CB08-41E0-8E2C-015AD660E163}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A670C5F1-CB08-41E0-8E2C-015AD660E163}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DEF3382-B3B7-415A-BB4D-FE6130EE0F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DEF3382-B3B7-415A-BB4D-FE6130EE0F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DEF3382-B3B7-415A-BB4D-FE6130EE0F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DEF3382-B3B7-415A-BB4D-FE6130EE0F48}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED394586-E4D7-4E95-964B-76217967B1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED394586-E4D7-4E95-964B-76217967B1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED394586-E4D7-4E95-964B-76217967B1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU

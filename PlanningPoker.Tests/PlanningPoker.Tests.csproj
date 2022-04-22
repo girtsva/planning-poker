@@ -21,4 +21,10 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Models\PlanningPoker.Models.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
+    </ItemGroup>
+
 </Project>
