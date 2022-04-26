@@ -40,7 +40,9 @@ try
     });
 
     builder.Services.AddTransient<IGameRoomService, GameRoomService>();
+    builder.Services.AddTransient<IPlayerService, PlayerService>();
     builder.Services.AddTransient<IDataRepository, DataRepository>();
+    builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
     //builder.Services.AddSingleton<IDataRepository, DataRepository>();
     //builder.Services.AddScoped<IDataRepository, DataRepository>();
 

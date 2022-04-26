@@ -11,8 +11,10 @@ public interface IDataRepository
     ICollection<GameRoom> ListGameRooms();
 
     GameRoom? GetGameRoomByName(string roomName);
+    GameRoom? AddPlayer(string roomId, Player name);
     ICollection<Player> ListUsers();
     bool RoomNameExists(string roomName);
+    bool RoomIdExists(string roomId);
     void DeleteAllRooms();
     void DeleteRoom(string roomName);
 }

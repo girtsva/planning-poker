@@ -39,10 +39,10 @@ public class GameRoomService : IGameRoomService
         return gameRoom;
     }
 
-    // public void AddPlayer(Player name)
-    // {
-    //     _gameRoom.Players.Add(name);
-    // }
+    public GameRoom? AddPlayer(string roomId, Player name)
+    {
+        return _dataRepository.AddPlayer(roomId, name);
+    }
 
     public ICollection<Player> ListUsers()
     {
@@ -52,6 +52,11 @@ public class GameRoomService : IGameRoomService
     public bool RoomNameExists(string roomName)
     {
         return _dataRepository.RoomNameExists(roomName);
+    }
+    
+    public bool RoomIdExists(string roomId)
+    {
+        return _dataRepository.RoomIdExists(roomId);
     }
 
     public void DeleteAllRooms()
