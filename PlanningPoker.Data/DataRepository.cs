@@ -45,7 +45,7 @@ public class DataRepository : IDataRepository
     
     public bool RoomIdExists(string roomId)
     {
-        return GameRooms.Values.Any(gameRoom => gameRoom.Id == roomId);
+        return GameRooms.Values.Any(gameRoom => gameRoom.Id == roomId);  // id dolhzno bit' key 
     }
 
     public void DeleteAllRooms()
