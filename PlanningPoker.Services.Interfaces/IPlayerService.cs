@@ -18,11 +18,11 @@ public interface IPlayerService
     ICollection<Player> ListPlayers();
     
     /// <summary>
-    ///     Searches and returns player from player repository by given player name.
+    ///     Searches and returns player from player repository by given player id.
     /// </summary>
-    /// <param name="playerName">Specified player name.</param>
+    /// <param name="playerId">Specified player id.</param>
     /// <returns>Instance of player if found; otherwise <c>null</c>.</returns>
-    Player? GetPlayerByName(string playerName);
+    Player? GetPlayerById(string playerId);
     
     /// <summary>
     ///     Checks whether player with specified name exists in the player repository.
@@ -30,4 +30,11 @@ public interface IPlayerService
     /// <param name="playerName">Specified player name.</param>
     /// <returns><c>true</c> if player exists; otherwise <c>false</c>.</returns>
     bool PlayerNameExists(string playerName);
+
+    /// <summary>
+    ///     Checks whether player with specified id exists in the player repository.
+    /// </summary>
+    /// <param name="playerId">Specified player id.</param>
+    /// <returns><c>true</c> if player exists; otherwise <c>false</c>.</returns>
+    bool PlayerIdExists(string playerId);
 }

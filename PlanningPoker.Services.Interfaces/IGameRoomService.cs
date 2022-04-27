@@ -7,29 +7,29 @@ public interface IGameRoomService
     /// <summary>
     ///     Creates a new game room in the data repository.
     /// </summary>
-    /// <param name="roomName">The desired name of the game room.</param>
+    /// <param name="roomName">The desired name of the game room</param>
     GameRoom CreateGameRoom(string roomName);
 
     /// <summary>
     ///     Returns a list of created game rooms in the data repository.
     /// </summary>
-    /// <returns>List of created game rooms if found; otherwise empty list.</returns>
+    /// <returns>List of created game rooms if found; otherwise empty list</returns>
     ICollection<GameRoom> ListGameRooms();
 
     /// <summary>
     ///     Searches and returns game room from data repository by given room name.
     /// </summary>
-    /// <param name="roomName">Specified game room name.</param>
-    /// <returns>Instance of found game room if found; otherwise <c>null</c>.</returns>
-    GameRoom? GetGameRoomByName(string roomName);
+    /// <param name="roomId">Specified game room Id</param>
+    /// <returns>Instance of found game room if found; otherwise <c>null</c></returns>
+    GameRoom? GetGameRoomById(string roomId);
 
     /// <summary>
     ///     Adds player to the given game room by Id.
     /// </summary>
-    /// <param name="roomId">Specified game room Id.</param>
-    /// <param name="name">Specified player name.</param>
+    /// <param name="roomId">Specified game room Id</param>
+    /// <param name="player">Specified player</param>
     /// <returns>Instance of updated game room.</returns>
-    GameRoom? AddPlayer(string roomId, Player name);
+    GameRoom? AddPlayer(string roomId, Player player);
     /// <summary>
     ///     Lists players in the game room.
     /// </summary>
@@ -39,14 +39,14 @@ public interface IGameRoomService
     /// <summary>
     ///     Checks whether game room with specified name exists in the data repository.
     /// </summary>
-    /// <param name="roomName">Specified game room name.</param>
-    /// <returns><c>true</c> if game room exists; otherwise <c>false</c>.</returns>
+    /// <param name="roomName">Specified game room name</param>
+    /// <returns><c>true</c> if game room exists; otherwise <c>false</c></returns>
     bool RoomNameExists(string roomName);
 
     /// <summary>
     ///     Checks whether game room with specified id exists in the data repository.
     /// </summary>
-    /// <param name="roomId">Specified game room Id.</param>
+    /// <param name="roomId">Specified game room Id</param>
     /// <returns><c>true</c> if game room exists; otherwise <c>false</c>.</returns>
     bool RoomIdExists(string roomId);
 
@@ -56,8 +56,8 @@ public interface IGameRoomService
     void DeleteAllRooms();
 
     /// <summary>
-    ///     Deletes the specified game room by room name from the data repository.
+    ///     Deletes the specified game room by room id from the data repository.
     /// </summary>
-    /// <param name="roomName">Specified game room name.</param>
-    void DeleteRoom(string roomName);
+    /// <param name="roomId">Specified game room name.</param>
+    void DeleteRoom(string roomId);
 }

@@ -32,16 +32,16 @@ public class GameRoomService : IGameRoomService
         return gameRooms;
     }
 
-    public GameRoom? GetGameRoomByName(string roomName)
+    public GameRoom? GetGameRoomById(string roomId)
     {
-        var gameRoom = _dataRepository.GetGameRoomByName(roomName);
-        _logger.LogInformation("Receiving room [{RoomName}], room object [{@Room}]", roomName, gameRoom);
+        var gameRoom = _dataRepository.GetGameRoomById(roomId);
+        _logger.LogInformation("Receiving room with id [{RoomId}], room object [{@Room}]", roomId, gameRoom);
         return gameRoom;
     }
 
-    public GameRoom? AddPlayer(string roomId, Player name)
+    public GameRoom? AddPlayer(string roomId, Player player)
     {
-        return _dataRepository.AddPlayer(roomId, name);
+        return _dataRepository.AddPlayer(roomId, player);
     }
 
     public ICollection<Player> ListUsers()
@@ -65,9 +65,9 @@ public class GameRoomService : IGameRoomService
         _dataRepository.DeleteAllRooms();
     }
 
-    public void DeleteRoom(string roomName)
+    public void DeleteRoom(string roomId)
     {
-        _logger.LogInformation("Deleting room [{roomName}]", roomName);
-        _dataRepository.DeleteRoom(roomName);
+        _logger.LogInformation("Deleting room with id [{roomName}]", roomId);
+        _dataRepository.DeleteRoom(roomId);
     }
 }

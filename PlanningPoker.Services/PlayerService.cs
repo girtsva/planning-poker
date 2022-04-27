@@ -20,7 +20,7 @@ public class PlayerService : IPlayerService
     public Player CreatePlayer(string playerName)
     {
         var player = _playerRepository.CreatePlayer(playerName);
-        _logger.LogInformation("Creating player [{PlayerName}], room object [{@Player}]", playerName, player);
+        _logger.LogInformation("Creating player [{PlayerName}], player object [{@Player}]", playerName, player);
         return player;
     }
 
@@ -31,15 +31,20 @@ public class PlayerService : IPlayerService
         return players;
     }
 
-    public Player? GetPlayerByName(string playerName)
+    public Player? GetPlayerById(string playerId)
     {
-        var player = _playerRepository.GetPlayerByName(playerName);
-        _logger.LogInformation("Receiving room [{PlayerName}], room object [{@Player}]", playerName, player);
+        var player = _playerRepository.GetPlayerById(playerId);
+        _logger.LogInformation("Receiving player with id [{PlayerId}], player object [{@Player}]", playerId, player);
         return player;
     }
     
     public bool PlayerNameExists(string playerName)
     {
         return _playerRepository.PlayerNameExists(playerName);
+    }
+    
+    public bool PlayerIdExists(string playerId)
+    {
+        return _playerRepository.PlayerIdExists(playerId);
     }
 }

@@ -12,7 +12,7 @@ public class DataRepository : IDataRepository
     public GameRoom CreateGameRoom(string roomName)
     {
         var gameRoom = new GameRoom(roomName);
-        GameRooms.Add(roomName, gameRoom);
+        GameRooms.Add(gameRoom.Id, gameRoom);
         return gameRoom;
     }
 
@@ -21,31 +21,33 @@ public class DataRepository : IDataRepository
         return GameRooms.Values;
     }
 
-    public GameRoom? GetGameRoomByName(string roomName)
+    public GameRoom? GetGameRoomById(string roomId)
     {
-        return GameRooms.ContainsKey(roomName) ? GameRooms[roomName] : null;
+        return GameRooms.ContainsKey(roomId) ? GameRooms[roomId] : null;
     }
 
-    public GameRoom? AddPlayer(string roomId, Player name)
+    public GameRoom? AddPlayer(string roomId, Player player)
     {
-        var gameRoom = GameRooms.Values.FirstOrDefault(gameRoom => gameRoom.Id == roomId);
-        gameRoom?.Players.Add(name);
+        var gameRoom = GameRooms[roomId];
+        gameRoom?.Players.Add(player);
         return gameRoom;
     }
 
     public ICollection<Player> ListUsers()
     {
-        throw new NotImplementedException();
+        var result = GameRooms.Values.SelectMany(gameRoom =>
+            gameRoom.Players);
+        return result.ToList();
     }
 
     public bool RoomNameExists(string roomName)
     {
-        return GameRooms.ContainsKey(roomName);
+        return GameRooms.Values.Any(gameRoom => gameRoom.Name == roomName);
     }
     
     public bool RoomIdExists(string roomId)
     {
-        return GameRooms.Values.Any(gameRoom => gameRoom.Id == roomId);  // id dolhzno bit' key 
+        return GameRooms.ContainsKey(roomId);
     }
 
     public void DeleteAllRooms()
@@ -53,8 +55,8 @@ public class DataRepository : IDataRepository
         GameRooms.Clear();
     }
 
-    public void DeleteRoom(string roomName)
+    public void DeleteRoom(string roomId)
     {
-        GameRooms.Remove(roomName);
+        GameRooms.Remove(roomId);
     }
 }

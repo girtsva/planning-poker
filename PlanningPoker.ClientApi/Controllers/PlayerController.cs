@@ -51,18 +51,18 @@ public class PlayerController : ControllerBase
     }
     
     /// <summary>
-    /// Gets the player by its name.
+    /// Gets the player by its id.
     /// </summary>
-    /// <param name="name">The name of the room to search for</param>
+    /// <param name="id">The id of the player to search for</param>
     /// <response code="200">Success: Returns the found player</response>
-    /// <response code="404">Not Found: if player with the specified name does not exist</response>
+    /// <response code="404">Not Found: if player with the specified id does not exist</response>
     [ProducesResponseType(typeof(Player), 200)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
-    [Route("{name}")]
-    public IActionResult ShowPlayer(string name)
+    [Route("{id}")]
+    public IActionResult ShowPlayer(string id)
     {
-        var player = _playerService.GetPlayerByName(name);
+        var player = _playerService.GetPlayerById(id);
 
         return player == null ? NotFound() : Ok(player);
     }
@@ -70,27 +70,27 @@ public class PlayerController : ControllerBase
     /// <summary>
     ///     Lets player to join existing game room.
     /// </summary>
-    /// <param name="roomId">The Id of game room to join</param>
-    /// <param name="playerName">The player name who joins the game room</param>
+    /// <param name="roomId">The id of game room to join</param>
+    /// <param name="playerId">The player id who joins the game room</param>
     /// <response code="200">Success: Returns the updated game room object</response>
-    /// <response code="400">Bad Request: if player with the specified name does not exist</response>
+    /// <response code="400">Bad Request: if player with the specified id does not exist</response>
     [ProducesResponseType(typeof(GameRoom), 200)]
     [ProducesResponseType(typeof(string), 400)]
     [HttpPost]
-    [Route("join/room/{roomId}/{playerName}")]
-    public IActionResult JoinRoom(string roomId, string playerName)
+    [Route("join/room/{roomId}/{playerId}")]
+    public IActionResult JoinRoom(string roomId, string playerId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
             return BadRequest($"Room with room Id {roomId} does not exist!");
         }
 
-        if (!_playerService.PlayerNameExists(playerName))
+        if (!_playerService.PlayerIdExists(playerId))
         {
-            return BadRequest($"Player with player name {playerName} does not exist!");
+            return BadRequest($"Player with player Id {playerId} does not exist!");
         }
 
-        var player = _playerService.GetPlayerByName(playerName);
+        var player = _playerService.GetPlayerById(playerId);
         var gameRoom = _gameRoomService.AddPlayer(roomId, player!);
         
         return Ok(gameRoom);

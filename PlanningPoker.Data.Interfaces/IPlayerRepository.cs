@@ -6,6 +6,7 @@ public interface IPlayerRepository
 {
     Player CreatePlayer(string playerName);
     ICollection<Player> ListPlayers();
-    Player? GetPlayerByName(string playerName);
+    Player? GetPlayerById(string playerId);
     bool PlayerNameExists(string playerName);
+    bool PlayerIdExists(string playerId);
 }

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using PlanningPoker.Data;
 using Xunit;
 
@@ -6,28 +7,28 @@ namespace PlanningPoker.Tests;
 public class DataRepositoryTests
 {
     [Fact]
-    public void GetGameRoomByName_GameRoomsExist_ReturnsGameRoom()
+    public void GetGameRoomById_GameRoomsExist_ReturnsGameRoom()
     {
         // Arrange
         var testDataRepo = new DataRepository();
-        var roomName = "testRepo";
-        testDataRepo.CreateGameRoom(roomName);
+        var roomName = "testGameRoom";
+        var gameRoomCreated = testDataRepo.CreateGameRoom(roomName);
 
         // Act
-        var gameRoom = testDataRepo.GetGameRoomByName(roomName);
+        var gameRoomFound = testDataRepo.GetGameRoomById(gameRoomCreated.Id);
 
         // Assert
-        Assert.True(gameRoom!.Name == roomName);
+        Assert.Equal(JsonConvert.SerializeObject(gameRoomCreated), JsonConvert.SerializeObject(gameRoomFound));
     }
     [Fact]
-    public void GetGameRoomByName_NoGameRoomsExist_ReturnsNull()
+    public void GetGameRoomById_NoGameRoomsExist_ReturnsNull()
     {
         // Arrange
         var testDataRepo = new DataRepository();
-        var roomName = "testRepo2";
+        var roomId = "testRoomId";
 
         // Act
-        var gameRoom = testDataRepo.GetGameRoomByName(roomName);
+        var gameRoom = testDataRepo.GetGameRoomById(roomId);
         
         // Assert
         Assert.True(gameRoom == null);

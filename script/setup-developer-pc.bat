@@ -9,7 +9,7 @@ echo [91m
 echo [1mWARNING! [0m[91mThis script will install or/and[1m UPGRADE[0m following: 
 echo [0m
 echo Chocolatey^
-%NLM%NodeJS^
+::%NLM%NodeJS^
 ::%NLM%Docker^
 %NLM%NPM^
 %NLM%dotnet
@@ -30,7 +30,8 @@ SET DIR=%~dp0%
 %systemroot%\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '%DIR%install.ps1' %*"
 del install.ps1
 
-call refreshenv
+taskkill /f /im explorer.exe && explorer.exe
+ping localhost -n 1
 
 choco feature enable -n allowGlobalConfirmation
 choco upgrade chocolatey

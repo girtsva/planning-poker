@@ -10,7 +10,7 @@ public class PlayerRepository : IPlayerRepository
     public Player CreatePlayer(string playerName)
     {
         var player = new Player(playerName);
-        Players.Add(playerName, player);
+        Players.Add(player.Id, player);
         return player;
     }
 
@@ -19,13 +19,18 @@ public class PlayerRepository : IPlayerRepository
         return Players.Values;
     }
 
-    public Player? GetPlayerByName(string playerName)
+    public Player? GetPlayerById(string playerId)
     {
-        return Players.ContainsKey(playerName) ? Players[playerName] : null;
+        return Players.ContainsKey(playerId) ? Players[playerId] : null;
     }
     
     public bool PlayerNameExists(string playerName)
     {
-        return Players.ContainsKey(playerName);
+        return Players.Values.Any(player => player.Name == playerName);
+    }
+    
+    public bool PlayerIdExists(string playerId)
+    {
+        return Players.ContainsKey(playerId);
     }
 }

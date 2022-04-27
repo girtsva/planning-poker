@@ -10,11 +10,11 @@ public interface IDataRepository
     /// <inheritdoc cref="PlanningPoker.Services.Interfaces.IGameRoomService.ListGameRooms()" />
     ICollection<GameRoom> ListGameRooms();
 
-    GameRoom? GetGameRoomByName(string roomName);
-    GameRoom? AddPlayer(string roomId, Player name);
+    GameRoom? GetGameRoomById(string roomId);
+    GameRoom? AddPlayer(string roomId, Player player);
     ICollection<Player> ListUsers();
     bool RoomNameExists(string roomName);
     bool RoomIdExists(string roomId);
     void DeleteAllRooms();
-    void DeleteRoom(string roomName);
+    void DeleteRoom(string roomId);
 }

@@ -48,18 +48,18 @@ public class GameRoomController : ControllerBase
     }
     
     /// <summary>
-    /// Gets the game room by its name.
+    /// Gets the game room by its id.
     /// </summary>
-    /// <param name="name">The name of the room to search for</param>
+    /// <param name="id">The id of the room to search for</param>
     /// <response code="200">Success: Returns the found room</response>
-    /// <response code="404">Not Found: if room with the specified name does not exist</response>
+    /// <response code="404">Not Found: if room with the specified id does not exist</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
-    [Route("{name}")]
-    public IActionResult ShowRoom(string name)
+    [Route("{id}")]
+    public IActionResult ShowRoom(string id)
     {
-        var room = _gameRoomService.GetGameRoomByName(name);
+        var room = _gameRoomService.GetGameRoomById(id);
 
         return room == null ? NotFound() : Ok(room);
     }
@@ -77,24 +77,24 @@ public class GameRoomController : ControllerBase
     }
     
     /// <summary>
-    /// Deletes the game room by its name.
+    /// Deletes the game room by its id.
     /// </summary>
-    /// <param name="name">The name of the room to delete</param>
+    /// <param name="id">The id of the room to delete</param>
     /// <response code="200">Success: Specified room is deleted</response>
-    /// <response code="404">Not Found: if room with the specified name does not exist</response>
+    /// <response code="404">Not Found: if room with the specified id does not exist</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete]
-    [Route("{name}")]
-    public IActionResult DeleteRoom(string name)
+    [Route("{id}")]
+    public IActionResult DeleteRoom(string id)
     {
-        if (!_gameRoomService.RoomNameExists(name))
+        if (!_gameRoomService.RoomIdExists(id))
         {
             return NotFound();
         }
 
-        _gameRoomService.DeleteRoom(name);
+        _gameRoomService.DeleteRoom(id);
 
-        return Ok($"Room {name} deleted");
+        return Ok($"Room with id {id} deleted");
     }
 }
