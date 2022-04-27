@@ -23,7 +23,14 @@ public class PlayerService : IPlayerService
         _logger.LogInformation("Creating player [{PlayerName}], room object [{@Player}]", playerName, player);
         return player;
     }
-    
+
+    public ICollection<Player> ListPlayers()
+    {
+        var players = _playerRepository.ListPlayers();
+        _logger.LogInformation("Receiving player objects [{@Players}]", players);
+        return players;
+    }
+
     public Player? GetPlayerByName(string playerName)
     {
         var player = _playerRepository.GetPlayerByName(playerName);

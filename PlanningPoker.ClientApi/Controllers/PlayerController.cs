@@ -41,6 +41,33 @@ public class PlayerController : ControllerBase
     }
     
     /// <summary>
+    /// Gets the list of players.
+    /// </summary>
+    [HttpGet]
+    [Route("list")]
+    public IActionResult ListPlayers()
+    {
+        return Ok(_playerService.ListPlayers());
+    }
+    
+    /// <summary>
+    /// Gets the player by its name.
+    /// </summary>
+    /// <param name="name">The name of the room to search for</param>
+    /// <response code="200">Success: Returns the found player</response>
+    /// <response code="404">Not Found: if player with the specified name does not exist</response>
+    [ProducesResponseType(typeof(Player), 200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet]
+    [Route("{name}")]
+    public IActionResult ShowPlayer(string name)
+    {
+        var player = _playerService.GetPlayerByName(name);
+
+        return player == null ? NotFound() : Ok(player);
+    }
+    
+    /// <summary>
     ///     Lets player to join existing game room.
     /// </summary>
     /// <param name="roomId">The Id of game room to join</param>

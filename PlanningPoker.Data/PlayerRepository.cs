@@ -13,7 +13,12 @@ public class PlayerRepository : IPlayerRepository
         Players.Add(playerName, player);
         return player;
     }
-    
+
+    public ICollection<Player> ListPlayers()
+    {
+        return Players.Values;
+    }
+
     public Player? GetPlayerByName(string playerName)
     {
         return Players.ContainsKey(playerName) ? Players[playerName] : null;
