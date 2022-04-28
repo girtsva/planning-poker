@@ -55,21 +55,21 @@ public class DataRepository : IDataRepository
     public GameRoom? RemovePlayer(string roomId, string playerId)
     {
         var gameRoom = GameRooms[roomId];
-        var player = gameRoom.Players.FirstOrDefault(player => player.Id == playerId);
-        gameRoom?.Players.Remove(player!);
+        var player = gameRoom.Players.First(player => player.Id == playerId);
+        gameRoom.Players.Remove(player);
         return gameRoom;
     }
     
-    public bool PlayerNameExists(string playerName)
+    public bool PlayerNameExists(string roomId, string playerName)
     {
-        var players = ListUsers();
+        var players = ListUsersInRoom(roomId);
         
         return players.Any(player => player.Name == playerName);
     }
     
-    public bool PlayerIdExists(string playerId)
+    public bool PlayerIdExists(string roomId, string playerId)
     {
-        var players = ListUsers();
+        var players = ListUsersInRoom(roomId);
         
         return players.Any(player => player.Id == playerId);
     }

@@ -50,13 +50,13 @@ public class PlayerService : IPlayerService
     //     return _playerRepository.PlayerIdExists(playerId);
     // }
 
-    public bool PlayerNameExists(string playerName)
+    public bool PlayerNameExists(string roomId, string playerName)
     {
-        return _dataRepository.PlayerNameExists(playerName);
+        return _dataRepository.PlayerNameExists(roomId, playerName);
     }
     
-    public bool PlayerIdExists(string playerId)
+    public bool PlayerIdExists(string roomId, string playerId)
     {
-        return _dataRepository.PlayerIdExists(playerId);
+        return _dataRepository.PlayerIdExists(roomId, playerId);
     }
 }

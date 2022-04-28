@@ -77,7 +77,7 @@ public class PlayerController : ControllerBase
     [ProducesResponseType(typeof(GameRoom), 200)]
     [ProducesResponseType(typeof(string), 400)]
     [HttpPost]
-    [Route("join/room/{roomId}/{playerName}")]
+    [Route("Join/Room/{roomId}/{playerName}")]
     public IActionResult JoinRoom(string roomId, string playerName)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
@@ -90,9 +90,9 @@ public class PlayerController : ControllerBase
         //     return BadRequest($"Player with name {playerName} does not exist!");
         // }
         
-        if (_playerService.PlayerNameExists(playerName))
+        if (_playerService.PlayerNameExists(roomId, playerName))
         {
-            return BadRequest($"Player with name {playerName} already exists!");
+            return BadRequest($"Player with name {playerName} already exists in the room with id {roomId}!");
         }
 
         // var player = _playerService.GetPlayerByName(playerName);
@@ -113,7 +113,7 @@ public class PlayerController : ControllerBase
     [ProducesResponseType(typeof(GameRoom), 200)]
     [ProducesResponseType(typeof(string), 400)]
     [HttpDelete]
-    [Route("leave/room/{roomId}/{playerId}")]
+    [Route("Leave/Room/{roomId}/{playerId}")]
     public IActionResult LeaveRoom(string roomId, string playerId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
@@ -121,9 +121,9 @@ public class PlayerController : ControllerBase
             return BadRequest($"Room with id {roomId} does not exist!");
         }
 
-        if (!_playerService.PlayerIdExists(playerId))
+        if (!_playerService.PlayerIdExists(roomId, playerId))
         {
-            return BadRequest($"Player with id {playerId} does not exist!");
+            return BadRequest($"Player with id {playerId} does not exist in the room with id {roomId}!");
         }
 
         var gameRoom = _gameRoomService.RemovePlayer(roomId, playerId);

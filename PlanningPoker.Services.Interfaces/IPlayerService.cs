@@ -39,11 +39,18 @@ public interface IPlayerService
     // bool PlayerIdExists(string playerId);
 
     /// <summary>
-    ///     Checks whether player with specified name exists in the player repository.
+    ///     Checks whether player with specified name exists in the data repository.
     /// </summary>
+    /// <param name="roomId">Specified room id.</param>
     /// <param name="playerName">Specified player name.</param>
     /// <returns><c>true</c> if player exists; otherwise <c>false</c>.</returns>
-    bool PlayerNameExists(string playerName);
+    bool PlayerNameExists(string roomId, string playerName);
 
-    bool PlayerIdExists(string playerId);
+    /// <summary>
+    ///     Checks whether player with specified id exists in the data repository.
+    /// </summary>
+    /// <param name="roomId">Specified room id.</param>
+    /// <param name="playerId">Specified player id.</param>
+    /// <returns><c>true</c> if player exists; otherwise <c>false</c>.</returns>
+    bool PlayerIdExists(string roomId, string playerId);
 }

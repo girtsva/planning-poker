@@ -43,7 +43,7 @@ public class GameRoomController : ControllerBase
     /// </summary>
     [HttpGet]
     //[Route("list")]
-    public IActionResult ListRooms()
+    public IActionResult List()
     {
         return Ok(_gameRoomService.ListGameRooms());
     }
@@ -58,7 +58,7 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
     [Route("{id}")]
-    public IActionResult ShowRoom(string id)
+    public IActionResult Get(string id)
     {
         var room = _gameRoomService.GetGameRoomById(id);
 
@@ -74,7 +74,7 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpGet]
     [Route("{roomId}")]
-    public IActionResult ListUsers(string roomId)
+    public IActionResult ListUsers(string roomId)   // to remove
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -106,7 +106,7 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete]
     [Route("{id}")]
-    public IActionResult DeleteRoom(string id)
+    public IActionResult Delete(string id)
     {
         if (!_gameRoomService.RoomIdExists(id))
         {

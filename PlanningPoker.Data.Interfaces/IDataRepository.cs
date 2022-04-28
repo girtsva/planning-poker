@@ -13,11 +13,11 @@ public interface IDataRepository
     GameRoom? GetGameRoomById(string roomId);
     // GameRoom? AddPlayer(string roomId, Player player);
     GameRoom? AddPlayer(string roomId, string playerName);
-    ICollection<Player> ListUsers();
+    // ICollection<Player> ListUsers();
     ICollection<Player> ListUsersInRoom(string roomId);
     GameRoom? RemovePlayer(string roomId, string playerId);
-    bool PlayerNameExists(string playerName);
-    bool PlayerIdExists(string playerId);
+    bool PlayerNameExists(string roomId, string playerName);
+    bool PlayerIdExists(string roomId, string playerId);
     bool RoomNameExists(string roomName);
     bool RoomIdExists(string roomId);
     void DeleteAllRooms();
