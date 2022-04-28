@@ -26,18 +26,52 @@ public class DataRepository : IDataRepository
         return GameRooms.ContainsKey(roomId) ? GameRooms[roomId] : null;
     }
 
-    public GameRoom? AddPlayer(string roomId, Player player)
+    // public GameRoom? AddPlayer(string roomId, Player player)
+    // {
+    //     var gameRoom = GameRooms[roomId];
+    //     gameRoom?.Players.Add(player);
+    //     return gameRoom;
+    // }
+    
+    public GameRoom? AddPlayer(string roomId, string playerName)
     {
         var gameRoom = GameRooms[roomId];
-        gameRoom?.Players.Add(player);
+        gameRoom?.Players.Add(new Player(playerName));
         return gameRoom;
     }
 
     public ICollection<Player> ListUsers()
     {
-        var result = GameRooms.Values.SelectMany(gameRoom =>
-            gameRoom.Players);
-        return result.ToList();
+        var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
+        return players;
+    }
+    
+    public ICollection<Player> ListUsersInRoom(string roomId)
+    {
+        var players = GameRooms[roomId].Players.ToList();
+        return players;
+    }
+    
+    public GameRoom? RemovePlayer(string roomId, string playerId)
+    {
+        var gameRoom = GameRooms[roomId];
+        var player = gameRoom.Players.First(player => player.Id == playerId);
+        gameRoom.Players.Remove(player);
+        return gameRoom;
+    }
+    
+    public bool PlayerNameExists(string roomId, string playerName)
+    {
+        var players = ListUsersInRoom(roomId);
+        
+        return players.Any(player => player.Name == playerName);
+    }
+    
+    public bool PlayerIdExists(string roomId, string playerId)
+    {
+        var players = ListUsersInRoom(roomId);
+        
+        return players.Any(player => player.Id == playerId);
     }
 
     public bool RoomNameExists(string roomName)

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
 namespace PlanningPoker.Controllers;
@@ -42,7 +43,7 @@ public class GameRoomController : ControllerBase
     /// </summary>
     [HttpGet]
     //[Route("list")]
-    public IActionResult ListRooms()
+    public IActionResult List()
     {
         return Ok(_gameRoomService.ListGameRooms());
     }
@@ -57,13 +58,32 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
     [Route("{id}")]
-    public IActionResult ShowRoom(string id)
+    public IActionResult Get(string id)
     {
         var room = _gameRoomService.GetGameRoomById(id);
 
         return room == null ? NotFound() : Ok(room);
     }
     
+    /// <summary>
+    /// Gets the list of players in the specified room.
+    /// </summary>
+    /// <response code="200">Success: Returns the list of players</response>
+    /// <response code="400">Bad Request: if room with the specified id does not exist</response>
+    [ProducesResponseType(typeof(List<Player>), 200)]
+    [ProducesResponseType(typeof(string), 400)]
+    [HttpGet]
+    [Route("{roomId}")]
+    public IActionResult ListUsers(string roomId)   // to remove
+    {
+        if (!_gameRoomService.RoomIdExists(roomId))
+        {
+            return BadRequest($"Room with id {roomId} does not exist!");
+        }
+        
+        return Ok(_gameRoomService.ListUsersInRoom(roomId));
+    }
+
     /// <summary>
     /// Deletes all rooms.
     /// </summary>
@@ -86,7 +106,7 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete]
     [Route("{id}")]
-    public IActionResult DeleteRoom(string id)
+    public IActionResult Delete(string id)
     {
         if (!_gameRoomService.RoomIdExists(id))
         {

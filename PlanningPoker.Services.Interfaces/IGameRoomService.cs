@@ -23,18 +23,35 @@ public interface IGameRoomService
     /// <returns>Instance of found game room if found; otherwise <c>null</c></returns>
     GameRoom? GetGameRoomById(string roomId);
 
+    // /// <summary>
+    // ///     Adds player to the given game room by Id.
+    // /// </summary>
+    // /// <param name="roomId">Specified game room Id</param>
+    // /// <param name="player">Specified player</param>
+    // /// <returns>Instance of updated game room.</returns>
+    // GameRoom? AddPlayer(string roomId, Player player);
+
     /// <summary>
     ///     Adds player to the given game room by Id.
     /// </summary>
     /// <param name="roomId">Specified game room Id</param>
-    /// <param name="player">Specified player</param>
+    /// <param name="playerName">Specified player name</param>
     /// <returns>Instance of updated game room.</returns>
-    GameRoom? AddPlayer(string roomId, Player player);
+    GameRoom? AddPlayer(string roomId, string playerName);
+    
     /// <summary>
     ///     Lists players in the game room.
     /// </summary>
     /// <returns>List of players if any; otherwise empty list.</returns>
-    ICollection<Player> ListUsers();
+    ICollection<Player> ListUsersInRoom(string roomId);
+
+    /// <summary>
+    ///     Removes player from the given game room by id.
+    /// </summary>
+    /// <param name="roomId">Specified game room Id</param>
+    /// <param name="playerId">Specified player Id</param>
+    /// <returns>Instance of updated game room.</returns>
+    GameRoom? RemovePlayer(string roomId, string playerId);
 
     /// <summary>
     ///     Checks whether game room with specified name exists in the data repository.

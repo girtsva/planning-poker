@@ -30,7 +30,7 @@ try
         {
             Version = "v1",
             Title = "Planning Poker Web API",
-            Description = "An ASP.NET Core Web API .NET 6 application that ..."
+            Description = "An ASP.NET Core Web API .NET 6 application that serves as backend part for Planning Poker app."
         });
 
         // Set the comments path for the Swagger JSON and UI.

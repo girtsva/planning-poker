@@ -39,14 +39,30 @@ public class GameRoomService : IGameRoomService
         return gameRoom;
     }
 
-    public GameRoom? AddPlayer(string roomId, Player player)
+    // public GameRoom? AddPlayer(string roomId, Player player)
+    // {
+    //     return _dataRepository.AddPlayer(roomId, player);
+    // }
+    
+    public GameRoom? AddPlayer(string roomId, string playerName)
     {
-        return _dataRepository.AddPlayer(roomId, player);
+        var gameRoom = _dataRepository.AddPlayer(roomId, playerName);
+        _logger.LogInformation("Adding player [{PlayerName}] to room id [{RoomId}], receiving room object [{@Room}]", playerName, roomId, gameRoom);
+        return gameRoom;
     }
 
-    public ICollection<Player> ListUsers()
+    public ICollection<Player> ListUsersInRoom(string roomId)
     {
-        throw new NotImplementedException();
+        var players = _dataRepository.ListUsersInRoom(roomId);
+        _logger.LogInformation("Receiving player objects [{@Players}] for room id [{RoomId}]", players, roomId);
+        return players;
+    }
+
+    public GameRoom? RemovePlayer(string roomId, string playerId)
+    {
+        var gameRoom = _dataRepository.RemovePlayer(roomId, playerId);
+        _logger.LogInformation("Removing player with id [{PlayerId}] from room id [{RoomId}], receiving room object [{@Room}]", playerId, roomId, gameRoom);
+        return gameRoom;
     }
 
     public bool RoomNameExists(string roomName)
