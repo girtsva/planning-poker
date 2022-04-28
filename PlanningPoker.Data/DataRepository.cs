@@ -26,18 +26,46 @@ public class DataRepository : IDataRepository
         return GameRooms.ContainsKey(roomId) ? GameRooms[roomId] : null;
     }
 
-    public GameRoom? AddPlayer(string roomId, Player player)
+    // public GameRoom? AddPlayer(string roomId, Player player)
+    // {
+    //     var gameRoom = GameRooms[roomId];
+    //     gameRoom?.Players.Add(player);
+    //     return gameRoom;
+    // }
+    
+    public GameRoom? AddPlayer(string roomId, string playerName)
     {
         var gameRoom = GameRooms[roomId];
-        gameRoom?.Players.Add(player);
+        gameRoom?.Players.Add(new Player(playerName));
         return gameRoom;
     }
 
     public ICollection<Player> ListUsers()
     {
-        var result = GameRooms.Values.SelectMany(gameRoom =>
-            gameRoom.Players);
+        var result = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players);
         return result.ToList();
+    }
+    
+    public GameRoom? RemovePlayer(string roomId, string playerId)
+    {
+        var gameRoom = GameRooms[roomId];
+        var player = gameRoom.Players.FirstOrDefault(player => player.Id == playerId);
+        gameRoom?.Players.Remove(player!);
+        return gameRoom;
+    }
+    
+    public bool PlayerNameExists(string playerName)
+    {
+        var players = ListUsers();
+        
+        return players.Any(player => player.Name == playerName);
+    }
+    
+    public bool PlayerIdExists(string playerId)
+    {
+        var players = ListUsers();
+        
+        return players.Any(player => player.Id == playerId);
     }
 
     public bool RoomNameExists(string roomName)
