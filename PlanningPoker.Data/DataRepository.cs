@@ -33,10 +33,10 @@ public class DataRepository : IDataRepository
     //     return gameRoom;
     // }
     
-    public GameRoom? AddPlayer(string roomId, string playerName)
+    public GameRoom AddPlayer(string roomId, string playerName)
     {
         var gameRoom = GameRooms[roomId];
-        gameRoom?.Players.Add(new Player(playerName));
+        gameRoom.Players.Add(new Player(playerName));
         return gameRoom;
     }
 
@@ -52,7 +52,7 @@ public class DataRepository : IDataRepository
         return players;
     }
     
-    public GameRoom? RemovePlayer(string roomId, string playerId)
+    public GameRoom RemovePlayer(string roomId, string playerId)
     {
         var gameRoom = GameRooms[roomId];
         var player = gameRoom.Players.First(player => player.Id == playerId);
