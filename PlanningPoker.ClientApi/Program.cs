@@ -54,6 +54,17 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    
+    app.UseCors(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            //.WithOrigins("http://localhost:5001")
+            .SetIsOriginAllowed(o => true)
+            .AllowCredentials()
+            .Build();
+    });
 
     app.UseHttpsRedirection();
 
