@@ -42,8 +42,14 @@ public class DataRepository : IDataRepository
 
     public ICollection<Player> ListUsers()
     {
-        var result = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players);
-        return result.ToList();
+        var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
+        return players;
+    }
+    
+    public ICollection<Player> ListUsersInRoom(string roomId)
+    {
+        var players = GameRooms[roomId].Players.ToList();
+        return players;
     }
     
     public GameRoom? RemovePlayer(string roomId, string playerId)

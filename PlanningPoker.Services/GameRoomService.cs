@@ -51,9 +51,11 @@ public class GameRoomService : IGameRoomService
         return gameRoom;
     }
 
-    public ICollection<Player> ListUsers()
+    public ICollection<Player> ListUsersInRoom(string roomId)
     {
-        throw new NotImplementedException();
+        var players = _dataRepository.ListUsersInRoom(roomId);
+        _logger.LogInformation("Receiving player objects [{@Players}] for room id [{RoomId}]", players, roomId);
+        return players;
     }
 
     public GameRoom? RemovePlayer(string roomId, string playerId)

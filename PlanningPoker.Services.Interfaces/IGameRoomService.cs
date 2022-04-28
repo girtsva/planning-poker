@@ -43,7 +43,7 @@ public interface IGameRoomService
     ///     Lists players in the game room.
     /// </summary>
     /// <returns>List of players if any; otherwise empty list.</returns>
-    ICollection<Player> ListUsers();
+    ICollection<Player> ListUsersInRoom(string roomId);
 
     /// <summary>
     ///     Removes player from the given game room by id.

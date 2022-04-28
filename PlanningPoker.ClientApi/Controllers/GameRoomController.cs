@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
 namespace PlanningPoker.Controllers;
@@ -64,6 +65,25 @@ public class GameRoomController : ControllerBase
         return room == null ? NotFound() : Ok(room);
     }
     
+    /// <summary>
+    /// Gets the list of players in the specified room.
+    /// </summary>
+    /// <response code="200">Success: Returns the list of players</response>
+    /// <response code="400">Bad Request: if room with the specified id does not exist</response>
+    [ProducesResponseType(typeof(List<Player>), 200)]
+    [ProducesResponseType(typeof(string), 400)]
+    [HttpGet]
+    [Route("{roomId}")]
+    public IActionResult ListUsers(string roomId)
+    {
+        if (!_gameRoomService.RoomIdExists(roomId))
+        {
+            return BadRequest($"Room with id {roomId} does not exist!");
+        }
+        
+        return Ok(_gameRoomService.ListUsersInRoom(roomId));
+    }
+
     /// <summary>
     /// Deletes all rooms.
     /// </summary>
