@@ -130,4 +130,13 @@ public class PlayerController : ControllerBase
         
         return Ok(gameRoom);
     }
+
+    [HttpPut]
+    [Route("Vote/{roomId}/{playerId}")]
+    public IActionResult Vote(string roomId, string playerId, [Required]PlayerVote vote)
+    {
+        var gameRoom = _playerService.Vote(roomId, playerId, vote);
+
+        return Ok(gameRoom);
+    }
 }

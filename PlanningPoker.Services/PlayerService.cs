@@ -59,4 +59,9 @@ public class PlayerService : IPlayerService
     {
         return _dataRepository.PlayerIdExists(roomId, playerId);
     }
+
+    public GameRoom Vote(string roomId, string playerId, PlayerVote vote)
+    {
+        return _dataRepository.Vote(roomId, playerId, vote);
+    }
 }

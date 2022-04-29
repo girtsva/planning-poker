@@ -53,4 +53,6 @@ public interface IPlayerService
     /// <param name="playerId">Specified player id.</param>
     /// <returns><c>true</c> if player exists; otherwise <c>false</c>.</returns>
     bool PlayerIdExists(string roomId, string playerId);
+
+    GameRoom Vote(string roomId, string playerId, PlayerVote vote);
 }

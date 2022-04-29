@@ -93,4 +93,20 @@ public class DataRepository : IDataRepository
     {
         GameRooms.Remove(roomId);
     }
+
+    public GameRoom Vote(string roomId, string playerId, PlayerVote vote)
+    {
+        var gameRoom = GameRooms[roomId];
+        gameRoom.Votes[playerId] = vote;
+
+        return gameRoom;
+    }
+
+    public GameRoom ClearVotes(string roomId)
+    {
+        var gameRoom = GameRooms[roomId];
+        gameRoom.Votes.Clear();
+
+        return gameRoom;
+    }
 }

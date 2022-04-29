@@ -117,4 +117,22 @@ public class GameRoomController : ControllerBase
 
         return Ok($"Room with id {id} deleted");
     }
+    
+    [HttpGet]
+    [Route("VotingCards")]
+    public IActionResult Show()
+    {
+        var cards = _gameRoomService.ShowVotingCards();
+
+        return Ok(cards);
+    }
+
+    [HttpDelete]
+    [Route("{roomId}")]
+    public IActionResult DeleteAllVotes(string roomId)
+    {
+        var gameRoom = _gameRoomService.ClearVotes(roomId);
+
+        return Ok(gameRoom);
+    }
 }

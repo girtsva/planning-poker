@@ -77,4 +77,7 @@ public interface IGameRoomService
     /// </summary>
     /// <param name="roomId">Specified game room name.</param>
     void DeleteRoom(string roomId);
+
+    Array ShowVotingCards();
+    GameRoom ClearVotes(string roomId);
 }

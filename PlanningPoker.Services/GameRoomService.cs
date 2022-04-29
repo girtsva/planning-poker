@@ -86,4 +86,14 @@ public class GameRoomService : IGameRoomService
         _logger.LogInformation("Deleting room with id [{roomName}]", roomId);
         _dataRepository.DeleteRoom(roomId);
     }
+
+    public Array ShowVotingCards()
+    {
+        return Enum.GetValues(typeof(PlayerVote));
+    }
+
+    public GameRoom ClearVotes(string roomId)
+    {
+        return _dataRepository.ClearVotes(roomId);
+    }
 }
