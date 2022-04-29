@@ -53,21 +53,22 @@ try
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseCors(corsPolicyBuilder =>
+            {
+                corsPolicyBuilder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    //.WithOrigins("http://localhost:5001")
+                    .SetIsOriginAllowed(o => true)
+                    .AllowCredentials()
+                    .Build();
+            });
+    }
+    else
+    {
+        app.UseHttpsRedirection();
     }
     
-    app.UseCors(corsPolicyBuilder =>
-    {
-        corsPolicyBuilder
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            //.WithOrigins("http://localhost:5001")
-            .SetIsOriginAllowed(o => true)
-            .AllowCredentials()
-            .Build();
-    });
-
-    app.UseHttpsRedirection();
-
     app.UseSerilogRequestLogging();
 
     app.UseAuthorization();
