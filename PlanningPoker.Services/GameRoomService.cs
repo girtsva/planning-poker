@@ -51,9 +51,9 @@ public class GameRoomService : IGameRoomService
         return gameRoom;
     }
 
-    public ICollection<Player> ListUsersInRoom(string roomId)
+    public ICollection<Player> ListPlayersInRoom(string roomId)
     {
-        var players = _dataRepository.ListUsersInRoom(roomId);
+        var players = _dataRepository.ListPlayersInRoom(roomId);
         _logger.LogInformation("Receiving player objects [{@Players}] for room id [{RoomId}]", players, roomId);
         return players;
     }
@@ -62,6 +62,13 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoom = _dataRepository.RemovePlayer(roomId, playerId);
         _logger.LogInformation("Removing player with id [{PlayerId}] from room id [{RoomId}], receiving room object [{@Room}]", playerId, roomId, gameRoom);
+        return gameRoom;
+    }
+
+    public GameRoom RemoveAllPlayers(string roomId)
+    {
+        var gameRoom = _dataRepository.RemoveAllPlayers(roomId);
+        _logger.LogInformation("Removing all players from room id [{RoomId}], receiving room object [{@Room}]", roomId, gameRoom);
         return gameRoom;
     }
 
@@ -83,7 +90,23 @@ public class GameRoomService : IGameRoomService
 
     public void DeleteRoom(string roomId)
     {
-        _logger.LogInformation("Deleting room with id [{roomName}]", roomId);
+        _logger.LogInformation("Deleting room with id [{RoomName}]", roomId);
         _dataRepository.DeleteRoom(roomId);
     }
+
+    public Array ShowVotingCards()
+    {
+        return Enum.GetValues(typeof(PlayerVote));
+    }
+
+    public GameRoom ClearVotes(string roomId)
+    {
+        _logger.LogInformation("Clearing votes in room with id [{RoomName}]", roomId);
+        return _dataRepository.ClearVotes(roomId);
+    }
+
+    // public bool VoteExists(PlayerVote vote)
+    // {
+    //     return Enum.IsDefined(typeof(PlayerVote), vote);
+    // }
 }

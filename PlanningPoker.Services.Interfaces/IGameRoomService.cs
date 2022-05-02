@@ -43,7 +43,7 @@ public interface IGameRoomService
     ///     Lists players in the game room.
     /// </summary>
     /// <returns>List of players if any; otherwise empty list.</returns>
-    ICollection<Player> ListUsersInRoom(string roomId);
+    ICollection<Player> ListPlayersInRoom(string roomId);
 
     /// <summary>
     ///     Removes player from the given game room by id.
@@ -52,6 +52,13 @@ public interface IGameRoomService
     /// <param name="playerId">Specified player Id</param>
     /// <returns>Instance of updated game room.</returns>
     GameRoom? RemovePlayer(string roomId, string playerId);
+
+    /// <summary>
+    ///     Removes all players from the given game room by id.
+    /// </summary>
+    /// <param name="roomId">Specified game room Id</param>
+    /// <returns>Instance of updated game room.</returns>
+    GameRoom RemoveAllPlayers(string roomId);
 
     /// <summary>
     ///     Checks whether game room with specified name exists in the data repository.
@@ -75,6 +82,25 @@ public interface IGameRoomService
     /// <summary>
     ///     Deletes the specified game room by room id from the data repository.
     /// </summary>
-    /// <param name="roomId">Specified game room name.</param>
+    /// <param name="roomId">Specified game room id</param>
     void DeleteRoom(string roomId);
+
+    /// <summary>
+    ///     Shows the available values of the voting cards.
+    /// </summary>
+    Array ShowVotingCards();
+    
+    /// <summary>
+    ///     Clears user votes in the specified game room.
+    /// </summary>
+    /// <param name="roomId">Specified game room id</param>
+    /// <returns>Instance of updated game room.</returns>
+    GameRoom ClearVotes(string roomId);
+    
+    // /// <summary>
+    // ///     Checks whether the provided player vote value exists in the defined enum.
+    // /// </summary>
+    // /// <param name="vote">Specified player vote value</param>
+    // /// <returns><c>true</c> if vote value exists; otherwise <c>false</c></returns>
+    // bool VoteExists(PlayerVote vote);
 }

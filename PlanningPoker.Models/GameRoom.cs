@@ -8,7 +8,7 @@ public class GameRoom
     public string Name { get; set; }
 
     public ICollection<Player> Players { get; set; } = new List<Player>();
-    //public int NumberOfPlayers { get; set; }
+    public IDictionary<string, PlayerVote> Votes { get; set; } = new Dictionary<string, PlayerVote>();
 
     public GameRoom(string name)
     {

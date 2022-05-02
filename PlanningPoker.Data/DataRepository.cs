@@ -40,13 +40,13 @@ public class DataRepository : IDataRepository
         return gameRoom;
     }
 
-    public ICollection<Player> ListUsers()
-    {
-        var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
-        return players;
-    }
+    // public ICollection<Player> ListUsers()
+    // {
+    //     var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
+    //     return players;
+    // }
     
-    public ICollection<Player> ListUsersInRoom(string roomId)
+    public ICollection<Player> ListPlayersInRoom(string roomId)
     {
         var players = GameRooms[roomId].Players.ToList();
         return players;
@@ -59,17 +59,25 @@ public class DataRepository : IDataRepository
         gameRoom.Players.Remove(player);
         return gameRoom;
     }
+
+    public GameRoom RemoveAllPlayers(string roomId)
+    {
+        var gameRoom = GameRooms[roomId];
+        gameRoom.Players.Clear();
+
+        return gameRoom;
+    }
     
     public bool PlayerNameExists(string roomId, string playerName)
     {
-        var players = ListUsersInRoom(roomId);
+        var players = ListPlayersInRoom(roomId);
         
         return players.Any(player => player.Name == playerName);
     }
     
     public bool PlayerIdExists(string roomId, string playerId)
     {
-        var players = ListUsersInRoom(roomId);
+        var players = ListPlayersInRoom(roomId);
         
         return players.Any(player => player.Id == playerId);
     }
@@ -92,5 +100,21 @@ public class DataRepository : IDataRepository
     public void DeleteRoom(string roomId)
     {
         GameRooms.Remove(roomId);
+    }
+
+    public GameRoom Vote(string roomId, string playerId, PlayerVote vote)
+    {
+        var gameRoom = GameRooms[roomId];
+        gameRoom.Votes[playerId] = vote;
+
+        return gameRoom;
+    }
+
+    public GameRoom ClearVotes(string roomId)
+    {
+        var gameRoom = GameRooms[roomId];
+        gameRoom.Votes.Clear();
+
+        return gameRoom;
     }
 }

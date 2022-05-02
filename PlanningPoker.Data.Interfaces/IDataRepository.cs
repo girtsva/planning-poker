@@ -14,12 +14,15 @@ public interface IDataRepository
     // GameRoom? AddPlayer(string roomId, Player player);
     GameRoom? AddPlayer(string roomId, string playerName);
     // ICollection<Player> ListUsers();
-    ICollection<Player> ListUsersInRoom(string roomId);
+    ICollection<Player> ListPlayersInRoom(string roomId);
     GameRoom? RemovePlayer(string roomId, string playerId);
+    GameRoom RemoveAllPlayers(string roomId);
     bool PlayerNameExists(string roomId, string playerName);
     bool PlayerIdExists(string roomId, string playerId);
     bool RoomNameExists(string roomName);
     bool RoomIdExists(string roomId);
     void DeleteAllRooms();
     void DeleteRoom(string roomId);
+    GameRoom Vote(string roomId, string playerId, PlayerVote vote);
+    GameRoom ClearVotes(string roomId);
 }
