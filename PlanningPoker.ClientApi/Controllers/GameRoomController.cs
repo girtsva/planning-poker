@@ -22,15 +22,15 @@ public class GameRoomController : ControllerBase
     /// <param name="roomName">The desired name of the room to create</param>
     /// <response code="201">Created: confirms the room is created and returns game room object</response>
     /// <response code="409">Conflict: if room with the specified name already exists</response>
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(GameRoom), 201)]
+    [ProducesResponseType(typeof(string), 409)]
     [HttpPost] //HttpPost more appropriate than HttpPut
     //[Route("create")]
     public IActionResult Create([Required]string roomName)
     {
         if (_gameRoomService.RoomNameExists(roomName))
         {
-            return Conflict();
+            return Conflict($"Room with name {roomName} already exists!");
         }
         
         var gameRoom = _gameRoomService.CreateGameRoom(roomName);
@@ -51,18 +51,18 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Gets the game room by its id.
     /// </summary>
-    /// <param name="id">The id of the room to search for</param>
+    /// <param name="roomId">The id of the room to search for</param>
     /// <response code="200">Success: Returns the found room</response>
     /// <response code="404">Not Found: if room with the specified id does not exist</response>
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(string), 404)]
     [HttpGet]
-    [Route("{id}")]
-    public IActionResult Get(string id)
+    [Route("{roomId}")]
+    public IActionResult Get(string roomId)
     {
-        var room = _gameRoomService.GetGameRoomById(id);
+        var room = _gameRoomService.GetGameRoomById(roomId);
 
-        return room == null ? NotFound() : Ok(room);
+        return room == null ? NotFound($"No room found with id {roomId} ") : Ok(room);
     }
     
     /// <summary>
@@ -81,7 +81,7 @@ public class GameRoomController : ControllerBase
             return BadRequest($"Room with id {roomId} does not exist!");
         }
         
-        return Ok(_gameRoomService.ListUsersInRoom(roomId));
+        return Ok(_gameRoomService.ListPlayersInRoom(roomId));
     }
     
     /// <summary>
@@ -95,6 +95,11 @@ public class GameRoomController : ControllerBase
     [Route("{roomId}")]
     public IActionResult RemoveAllPlayers(string roomId)
     {
+        if (!_gameRoomService.RoomIdExists(roomId))
+        {
+            return BadRequest($"Room with id {roomId} does not exist!");
+        }
+        
         var gameRoom = _gameRoomService.RemoveAllPlayers(roomId);
 
         return Ok(gameRoom);
@@ -115,25 +120,30 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Deletes the game room by its id.
     /// </summary>
-    /// <param name="id">The id of the room to delete</param>
+    /// <param name="roomId">The id of the room to delete</param>
     /// <response code="200">Success: Specified room is deleted</response>
     /// <response code="404">Not Found: if room with the specified id does not exist</response>
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(string), 404)]
     [HttpDelete]
-    [Route("{id}")]
-    public IActionResult Delete(string id)
+    [Route("{roomId}")]
+    public IActionResult Delete(string roomId)
     {
-        if (!_gameRoomService.RoomIdExists(id))
+        if (!_gameRoomService.RoomIdExists(roomId))
         {
-            return NotFound();
+            return NotFound($"Room with id {roomId} does not exist!");
         }
 
-        _gameRoomService.DeleteRoom(id);
+        _gameRoomService.DeleteRoom(roomId);
 
-        return Ok($"Room with id {id} deleted");
+        return Ok($"Room with id {roomId} deleted");
     }
     
+    /// <summary>
+    ///     Shows voting card values (e.g., Fibonacci number sequence).
+    /// </summary>
+    /// <returns>Array of voting card values.</returns>
+    [ProducesResponseType(typeof(Array), 200)]
     [HttpGet]
     [Route("VotingCards")]
     public IActionResult Show()
@@ -143,10 +153,22 @@ public class GameRoomController : ControllerBase
         return Ok(cards);
     }
 
+    /// <summary>
+    ///     Deletes all votes in the given game room.
+    /// </summary>
+    /// <param name="roomId">The id of game room from which the votes will be removed</param>
+    /// <returns>Instance of updated game room.</returns>
+    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(string), 400)]
     [HttpDelete]
     [Route("{roomId}")]
     public IActionResult DeleteAllVotes(string roomId)
     {
+        if (!_gameRoomService.RoomIdExists(roomId))
+        {
+            return BadRequest($"Room with id {roomId} does not exist!");
+        }
+        
         var gameRoom = _gameRoomService.ClearVotes(roomId);
 
         return Ok(gameRoom);

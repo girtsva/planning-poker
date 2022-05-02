@@ -131,10 +131,34 @@ public class PlayerController : ControllerBase
         return Ok(gameRoom);
     }
 
+    /// <summary>
+    ///     Submits the vote of the specified player in the specified game room.
+    /// </summary>
+    /// <param name="roomId">The id of game room in which the voting process is happening</param>
+    /// <param name="playerId">The id of player who has voted</param>
+    /// <param name="vote">The vote value chosen</param>
+    /// <returns>Updated instance of game room.</returns>
+    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(string), 400)]
     [HttpPut]
     [Route("Vote/{roomId}/{playerId}")]
     public IActionResult Vote(string roomId, string playerId, [Required]PlayerVote vote)
     {
+        if (!_gameRoomService.RoomIdExists(roomId))
+        {
+            return BadRequest($"Room with id {roomId} does not exist!");
+        }
+
+        if (!_playerService.PlayerIdExists(roomId, playerId))
+        {
+            return BadRequest($"Player with id {playerId} does not exist in the room with id {roomId}!");
+        }
+
+        // if (!_gameRoomService.VoteExists(vote))
+        // {
+        //     return BadRequest($"Provided vote value {vote} does not exist!");
+        // }
+        
         var gameRoom = _playerService.Vote(roomId, playerId, vote);
 
         return Ok(gameRoom);

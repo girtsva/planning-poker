@@ -62,6 +62,9 @@ public class PlayerService : IPlayerService
 
     public GameRoom Vote(string roomId, string playerId, PlayerVote vote)
     {
-        return _dataRepository.Vote(roomId, playerId, vote);
+        var gameRoom = _dataRepository.Vote(roomId, playerId, vote);
+        _logger.LogInformation("Storing vote [{Vote}] of player with id [{PlayerId}] in a room with id [{RoomId}]," +
+                               "returning game room object [{@GameRoom}]", vote, playerId, roomId, gameRoom);
+        return gameRoom;
     }
 }

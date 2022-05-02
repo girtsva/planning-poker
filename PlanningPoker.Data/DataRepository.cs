@@ -40,13 +40,13 @@ public class DataRepository : IDataRepository
         return gameRoom;
     }
 
-    public ICollection<Player> ListUsers()
-    {
-        var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
-        return players;
-    }
+    // public ICollection<Player> ListUsers()
+    // {
+    //     var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
+    //     return players;
+    // }
     
-    public ICollection<Player> ListUsersInRoom(string roomId)
+    public ICollection<Player> ListPlayersInRoom(string roomId)
     {
         var players = GameRooms[roomId].Players.ToList();
         return players;
@@ -70,14 +70,14 @@ public class DataRepository : IDataRepository
     
     public bool PlayerNameExists(string roomId, string playerName)
     {
-        var players = ListUsersInRoom(roomId);
+        var players = ListPlayersInRoom(roomId);
         
         return players.Any(player => player.Name == playerName);
     }
     
     public bool PlayerIdExists(string roomId, string playerId)
     {
-        var players = ListUsersInRoom(roomId);
+        var players = ListPlayersInRoom(roomId);
         
         return players.Any(player => player.Id == playerId);
     }

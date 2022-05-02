@@ -54,5 +54,12 @@ public interface IPlayerService
     /// <returns><c>true</c> if player exists; otherwise <c>false</c>.</returns>
     bool PlayerIdExists(string roomId, string playerId);
 
+    /// <summary>
+    ///     Submits the vote of the specified player in the specified game room.
+    /// </summary>
+    /// <param name="roomId">The id of game room in which the voting process is happening</param>
+    /// <param name="playerId">The id of player who has voted</param>
+    /// <param name="vote">The vote value chosen</param>
+    /// <returns>Updated instance of game room.</returns>
     GameRoom Vote(string roomId, string playerId, PlayerVote vote);
 }
