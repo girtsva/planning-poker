@@ -16,6 +16,7 @@ public interface IDataRepository
     // ICollection<Player> ListUsers();
     ICollection<Player> ListUsersInRoom(string roomId);
     GameRoom? RemovePlayer(string roomId, string playerId);
+    GameRoom RemoveAllPlayers(string roomId);
     bool PlayerNameExists(string roomId, string playerName);
     bool PlayerIdExists(string roomId, string playerId);
     bool RoomNameExists(string roomName);

@@ -65,6 +65,13 @@ public class GameRoomService : IGameRoomService
         return gameRoom;
     }
 
+    public GameRoom RemoveAllPlayers(string roomId)
+    {
+        var gameRoom = _dataRepository.RemoveAllPlayers(roomId);
+
+        return gameRoom;
+    }
+
     public bool RoomNameExists(string roomName)
     {
         return _dataRepository.RoomNameExists(roomName);

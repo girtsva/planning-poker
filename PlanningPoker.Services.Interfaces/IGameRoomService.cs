@@ -54,6 +54,13 @@ public interface IGameRoomService
     GameRoom? RemovePlayer(string roomId, string playerId);
 
     /// <summary>
+    ///     Removes all players from the given game room by id.
+    /// </summary>
+    /// <param name="roomId">Specified game room Id</param>
+    /// <returns>Instance of updated game room.</returns>
+    GameRoom RemoveAllPlayers(string roomId);
+
+    /// <summary>
     ///     Checks whether game room with specified name exists in the data repository.
     /// </summary>
     /// <param name="roomName">Specified game room name</param>

@@ -59,6 +59,14 @@ public class DataRepository : IDataRepository
         gameRoom.Players.Remove(player);
         return gameRoom;
     }
+
+    public GameRoom RemoveAllPlayers(string roomId)
+    {
+        var gameRoom = GameRooms[roomId];
+        gameRoom.Players.Clear();
+
+        return gameRoom;
+    }
     
     public bool PlayerNameExists(string roomId, string playerName)
     {

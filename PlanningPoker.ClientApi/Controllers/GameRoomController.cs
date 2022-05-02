@@ -74,7 +74,7 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpGet]
     [Route("{roomId}")]
-    public IActionResult ListUsers(string roomId)   // to remove
+    public IActionResult ListPlayers(string roomId)   // to remove
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -82,6 +82,22 @@ public class GameRoomController : ControllerBase
         }
         
         return Ok(_gameRoomService.ListUsersInRoom(roomId));
+    }
+    
+    /// <summary>
+    ///     Removes all players from the specified room.
+    /// </summary>
+    /// <param name="roomId">The id of game room from which the players will be removed</param>
+    /// <response code="200">Success: All players are deleted</response>
+    /// <returns>Instance of updated game room.</returns>
+    [ProducesResponseType(typeof(GameRoom), 200)]
+    [HttpDelete]
+    [Route("{roomId}")]
+    public IActionResult RemoveAllPlayers(string roomId)
+    {
+        var gameRoom = _gameRoomService.RemoveAllPlayers(roomId);
+
+        return Ok(gameRoom);
     }
 
     /// <summary>
