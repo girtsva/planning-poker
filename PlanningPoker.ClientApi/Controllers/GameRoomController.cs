@@ -21,12 +21,16 @@ public class GameRoomController : ControllerBase
     /// </summary>
     /// <param name="roomName">The desired name of the room to create</param>
     /// <response code="201">Created: confirms the room is created and returns game room object</response>
+    /// <response code="400">Bad Request: incorrectly entered roomName</response>
     /// <response code="409">Conflict: if room with the specified name already exists</response>
     [ProducesResponseType(typeof(GameRoom), 201)]
     [ProducesResponseType(typeof(string), 409)]
     [HttpPost] //HttpPost more appropriate than HttpPut
     //[Route("create")]
-    public IActionResult Create([Required]string roomName)
+    public IActionResult Create(
+        [Required]
+        [RegularExpression("[a-zA-Z0-9_-]{3,30}", ErrorMessage = "Room name must be 3-30 characters; only alphanumeric, _,- characters allowed")]
+        string roomName)
     {
         if (_gameRoomService.RoomNameExists(roomName))
         {
@@ -58,7 +62,9 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     [HttpGet]
     [Route("{roomId}")]
-    public IActionResult Get(string roomId)
+    public IActionResult Get(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId)
     {
         var room = _gameRoomService.GetGameRoomById(roomId);
 
@@ -74,7 +80,9 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpGet]
     [Route("{roomId}")]
-    public IActionResult ListPlayers(string roomId)   // to remove
+    public IActionResult ListPlayers(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -93,7 +101,9 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(GameRoom), 200)]
     [HttpDelete]
     [Route("{roomId}")]
-    public IActionResult RemoveAllPlayers(string roomId)
+    public IActionResult RemoveAllPlayers(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -127,7 +137,9 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     [HttpDelete]
     [Route("{roomId}")]
-    public IActionResult Delete(string roomId)
+    public IActionResult Delete(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -162,7 +174,9 @@ public class GameRoomController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpDelete]
     [Route("{roomId}")]
-    public IActionResult DeleteAllVotes(string roomId)
+    public IActionResult DeleteAllVotes(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {

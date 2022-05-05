@@ -78,7 +78,11 @@ public class PlayerController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpPost]
     [Route("Join/Room/{roomId}/{playerName}")]
-    public IActionResult JoinRoom(string roomId, string playerName)
+    public IActionResult JoinRoom(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId,
+        [RegularExpression("[a-zA-Z0-9_-]{3,20}", ErrorMessage = "Player name must be 3-20 characters; only alphanumeric, _,- characters allowed")]
+        string playerName)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -114,7 +118,11 @@ public class PlayerController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpDelete]
     [Route("Leave/Room/{roomId}/{playerId}")]
-    public IActionResult LeaveRoom(string roomId, string playerId)
+    public IActionResult LeaveRoom(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId,
+        [RegularExpression("[a-zA-Z0-9]{10}", ErrorMessage = "Incorrect player id")]
+        string playerId)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
@@ -142,7 +150,13 @@ public class PlayerController : ControllerBase
     [ProducesResponseType(typeof(string), 400)]
     [HttpPut]
     [Route("Vote/{roomId}/{playerId}")]
-    public IActionResult Vote(string roomId, string playerId, [Required]PlayerVote vote)
+    public IActionResult Vote(
+        [RegularExpression("[a-zA-Z]{10}", ErrorMessage = "Incorrect room id")]
+        string roomId, 
+        [RegularExpression("[a-zA-Z0-9]{10}", ErrorMessage = "Incorrect player id")]
+        string playerId, 
+        [Required]
+        PlayerVote vote)
     {
         if (!_gameRoomService.RoomIdExists(roomId))
         {
