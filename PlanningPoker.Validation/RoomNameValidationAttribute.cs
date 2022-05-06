@@ -19,13 +19,13 @@ public class RoomNameValidationAttribute : RegularExpressionAttribute
         {
             ErrorMessage = "Room name must be 3-30 characters; only alphanumeric, _,- characters allowed!";
         }
-        // if value == null, [Required] attribute will fire with its error message, so no message required here
         else
         {
             var gameRoomService = (IGameRoomService)validationContext
                 .GetService(typeof(IGameRoomService))!;
             var roomNameExists = gameRoomService.RoomNameExists((string?)value ?? string.Empty);
             
+            // if value == null, [Required] attribute will fire with its error message, so no message required here
             if (ErrorMessage is null && value != null && roomNameExists)
             {
                 ErrorMessage = $"Room with name {value} already exists!";

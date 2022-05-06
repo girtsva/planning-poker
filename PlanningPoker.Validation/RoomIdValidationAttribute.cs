@@ -7,27 +7,36 @@ public class RoomIdValidationAttribute : RegularExpressionAttribute
 {
     public RoomIdValidationAttribute() : base("[a-zA-Z]{10}")
     {
-        ErrorMessage = "Incorrect room id!";
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
+        ErrorMessage = null;
         var roomIdIsValid = base.IsValid(value);
-        var gameRoomService = (IGameRoomService) validationContext
-            .GetService(typeof(IGameRoomService))!;
-        var roomIdExists = gameRoomService.RoomIdExists((string?)value ?? string.Empty);
+        var result = ValidationResult.Success;
 
         if (!roomIdIsValid)
         {
-            return new ValidationResult(ErrorMessage);
+            ErrorMessage = "Incorrect room id!";
+        }
+        else
+        {
+            var gameRoomService = (IGameRoomService) validationContext
+                .GetService(typeof(IGameRoomService))!;
+            var roomIdExists = gameRoomService.RoomIdExists((string?)value ?? string.Empty);
+            
+            // if value == null, [Required] attribute will fire with its error message, so no message required here
+            if (ErrorMessage is null && value != null && !roomIdExists)
+            {
+                ErrorMessage = $"Room with id {value} does not exist!";
+            }
         }
         
-        // if value == null, [Required] attribute will fire with its error message, so no message required here
-        if (value != null && !roomIdExists)
+        if (ErrorMessage is not null)
         {
-            return new ValidationResult($"Room with id {value} does not exist!");
+            result = new ValidationResult(ErrorMessage);
         }
 
-        return ValidationResult.Success;
+        return result;
     }
 }

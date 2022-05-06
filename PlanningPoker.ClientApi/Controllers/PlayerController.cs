@@ -18,56 +18,7 @@ public class PlayerController : ControllerBase
         _gameRoomService = gameRoomService;
         _playerService = playerService;
     }
-    
-    // /// <summary>
-    // ///     Creates a new player.
-    // /// </summary>
-    // /// <param name="playerName">The desired name of the player</param>
-    // /// <response code="201">Created: confirms the player is created and returns player object</response>
-    // /// <response code="409">Conflict: if player with the specified name already exists</response>
-    // [ProducesResponseType(StatusCodes.Status201Created)]
-    // [ProducesResponseType(StatusCodes.Status409Conflict)]
-    // [HttpPost]
-    // [Route("create")]
-    // public IActionResult Create([Required]string playerName)
-    // {
-    //     if (_playerService.PlayerNameExists(playerName))
-    //     {
-    //         return Conflict();
-    //     }
-    //     
-    //     var player = _playerService.CreatePlayer(playerName);
-    //     
-    //     return Created("", player);
-    // }
-    //
-    // /// <summary>
-    // /// Gets the list of players.
-    // /// </summary>
-    // [HttpGet]
-    // [Route("list")]
-    // public IActionResult ListPlayers()
-    // {
-    //     return Ok(_playerService.ListPlayers());
-    // }
-    //
-    // /// <summary>
-    // /// Gets the player by its id.
-    // /// </summary>
-    // /// <param name="id">The id of the player to search for</param>
-    // /// <response code="200">Success: Returns the found player</response>
-    // /// <response code="404">Not Found: if player with the specified id does not exist</response>
-    // [ProducesResponseType(typeof(Player), 200)]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // [HttpGet]
-    // [Route("{id}")]
-    // public IActionResult ShowPlayer(string id)
-    // {
-    //     var player = _playerService.GetPlayerById(id);
-    //
-    //     return player == null ? NotFound() : Ok(player);
-    // }
-    
+
     /// <summary>
     ///     Lets player to join existing game room.
     /// </summary>
@@ -76,21 +27,23 @@ public class PlayerController : ControllerBase
     /// <response code="200">Success: Returns the updated game room object</response>
     /// <response code="400">Bad Request:
     /// if incorrectly entered roomId / playerName or
-    /// if room with the specified id does not exist or
-    /// if player with the specified name already exists in the specified room</response>
+    /// if room with the specified id does not exist</response>
+    /// <response code="409">Conflict: if player with the specified name already exists in the specified room</response>
+    /// <returns>Updated instance of game room.</returns>
     [ProducesResponseType(typeof(GameRoom), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), 409)]
     [HttpPost]
     [Route("Join/Room/{roomId}/{playerName}")]
     public IActionResult JoinRoom(
         [RoomIdValidation]
         string roomId,
-        //[PlayerNameValidation(RoomId = roomId)]
+        [PlayerNameValidation]
         string playerName)
     {
         if (_playerService.PlayerNameExists(roomId, playerName))
         {
-            return BadRequest($"Player with name {playerName} already exists in the room with id {roomId}!");
+            return Conflict($"Player with name {playerName} already exists in the room with id {roomId}!");
         }
 
         return Ok(_gameRoomService.AddPlayer(roomId, playerName));
@@ -106,15 +59,15 @@ public class PlayerController : ControllerBase
     /// if incorrectly entered roomId / playerId or
     /// if room with the specified id does not exist or
     /// if player with the specified id does not exist in the specified room</response>
+    /// <returns>Updated instance of game room.</returns>
     [ProducesResponseType(typeof(GameRoom), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), 400)]
     [HttpDelete]
     [Route("Leave/Room/{roomId}/{playerId}")]
     public IActionResult LeaveRoom(
         [RoomIdValidation]
         string roomId,
-        [RegularExpression("[a-zA-Z0-9]{10}", ErrorMessage = "Incorrect player id")]
+        [PlayerIdValidation]
         string playerId)
     {
         if (!_playerService.PlayerIdExists(roomId, playerId))
@@ -139,13 +92,12 @@ public class PlayerController : ControllerBase
     /// <returns>Updated instance of game room.</returns>
     [ProducesResponseType(typeof(GameRoom), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), 400)]
     [HttpPut]
     [Route("Vote/{roomId}/{playerId}")]
     public IActionResult Vote(
         [RoomIdValidation]
         string roomId, 
-        [RegularExpression("[a-zA-Z0-9]{10}", ErrorMessage = "Incorrect player id")]
+        [PlayerIdValidation]
         string playerId, 
         [Required]
         PlayerVote vote)
