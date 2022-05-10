@@ -7,15 +7,16 @@ public class PlanningPokerDbContext : DbContext
 {
     public PlanningPokerDbContext(DbContextOptions<PlanningPokerDbContext> options) : base(options) { }
     
-    public DbSet<GameRoom>? GameRooms { get; set; }
-    public DbSet<Player>? Players { get; set; }
+    public DbSet<GameRoom> GameRooms { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<PlayerVote> PlayerVotes { get; set; }
 
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder
-    //         .EnableSensitiveDataLogging()
-    //         .EnableDetailedErrors();
-    // }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    }
     
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {

@@ -1,6 +1,6 @@
 namespace PlanningPoker.Models;
 
-public enum PlayerVote
+public enum VotingCard
 {
     One = 1,
     Two = 2,

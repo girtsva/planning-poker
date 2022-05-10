@@ -23,6 +23,6 @@ public interface IDataRepository
     bool RoomIdExists(string roomId);
     void DeleteAllRooms();
     void DeleteRoom(string roomId);
-    GameRoom Vote(string roomId, string playerId, PlayerVote vote);
+    GameRoom Vote(string roomId, string playerId, VotingCard vote);
     GameRoom ClearVotes(string roomId);
 }

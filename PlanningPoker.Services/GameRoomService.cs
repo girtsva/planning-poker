@@ -96,7 +96,7 @@ public class GameRoomService : IGameRoomService
 
     public Array ShowVotingCards()
     {
-        return Enum.GetValues(typeof(PlayerVote));
+        return Enum.GetValues(typeof(VotingCard));
     }
 
     public GameRoom ClearVotes(string roomId)

@@ -85,7 +85,10 @@ try
 }
 catch (Exception e)
 {
-    Log.Fatal(e, "Unhandled exception");
+    if (!e.GetType().Name.Contains("StopTheHostException"))
+    {
+        Log.Fatal(e, "Unhandled exception");
+    }
 }
 finally
 {

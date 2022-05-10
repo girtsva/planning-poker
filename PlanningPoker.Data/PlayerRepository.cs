@@ -10,7 +10,7 @@ public class PlayerRepository : IPlayerRepository
     public Player CreatePlayer(string playerName)
     {
         var player = new Player(playerName);
-        Players.Add(player.Id, player);
+        Players.Add(player.ExternalId, player);
         return player;
     }
 

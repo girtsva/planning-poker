@@ -16,7 +16,7 @@ public class GameRoomTests : TestsBase
         var gameRoom = new GameRoom("testRoom");
 
         // Act
-        var id = gameRoom.Id;
+        var id = gameRoom.ExternalId;
 
         // Assert
         Assert.True(id.Length == 10);
@@ -47,7 +47,7 @@ public class GameRoomTests : TestsBase
         for (var i = 0; i < numberOfRooms; i++)
         {
             var gameRoom = new GameRoom("testRoom");
-            ids.Add(gameRoom.Id);
+            ids.Add(gameRoom.ExternalId);
         }
 
         // Assert

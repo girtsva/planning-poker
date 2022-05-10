@@ -60,7 +60,7 @@ public class PlayerService : IPlayerService
         return _dataRepository.PlayerIdExists(roomId, playerId);
     }
 
-    public GameRoom Vote(string roomId, string playerId, PlayerVote vote)
+    public GameRoom Vote(string roomId, string playerId, VotingCard vote)
     {
         var gameRoom = _dataRepository.Vote(roomId, playerId, vote);
         _logger.LogInformation("Storing vote [{Vote}] of player with id [{PlayerId}] in a room with id [{RoomId}]," +

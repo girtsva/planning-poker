@@ -61,5 +61,5 @@ public interface IPlayerService
     /// <param name="playerId">The id of player who has voted</param>
     /// <param name="vote">The vote value chosen</param>
     /// <returns>Updated instance of game room.</returns>
-    GameRoom Vote(string roomId, string playerId, PlayerVote vote);
+    GameRoom Vote(string roomId, string playerId, VotingCard vote);
 }
