@@ -16,6 +16,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Tests", "Plan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Validation", "PlanningPoker.Validation\PlanningPoker.Validation.csproj", "{5C57E21E-8857-4683-A9DC-2319B3EC07B4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "script", "script", "{6781B0A6-472F-490C-A4AC-A26D120B5B80}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\docker-compose.yml = scripts\docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
