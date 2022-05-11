@@ -25,6 +25,7 @@
         <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
         <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
         <ProjectReference Include="..\PlanningPoker.Services\PlanningPoker.Services.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Validation\PlanningPoker.Validation.csproj" />
     </ItemGroup>
 
 </Project>
