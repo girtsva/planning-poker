@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using PlanningPoker.Common.Models;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 using PlanningPoker.Validation;

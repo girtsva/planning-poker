@@ -1,3 +1,5 @@
+using PlanningPoker.Common.Models;
+
 namespace PlanningPoker.Models;
 
 public class PlayerVote

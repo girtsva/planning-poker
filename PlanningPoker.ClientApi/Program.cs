@@ -5,6 +5,7 @@ using PlanningPoker.Data;
 using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Services;
 using PlanningPoker.Services.Interfaces;
+using PlanningPoker.Services.Mapping;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -23,6 +24,7 @@ try
     // Add services to the container.
 
     builder.Services.AddControllers();
+    builder.Services.AddAutoMapper(typeof(MappingProfile));
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
@@ -86,6 +88,7 @@ try
 catch (Exception e)
 {
     // https://github.com/dotnet/runtime/issues/60600
+    // Todo: add notes
     if (!e.GetType().Name.Contains("StopTheHostException"))
     {
         Log.Fatal(e, "Unhandled exception");
