@@ -1,18 +1,23 @@
+using System.Collections.ObjectModel;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace PlanningPoker.Models;
 
 public class GameRoom
 {
-    public string Id { get; init; }   // random 10 letters on room creating
+    [JsonIgnore]
+    public int Id { get; init; }
+    public string ExternalId { get; init; }   // random 10 letters on room creating
     public string Name { get; set; }
 
     public ICollection<Player> Players { get; set; } = new List<Player>();
-    public IDictionary<string, PlayerVote> Votes { get; set; } = new Dictionary<string, PlayerVote>();
+    //public IDictionary<string, VotingCard> Votes { get; set; } = new Dictionary<string, VotingCard>();
+    public ICollection<PlayerVote> Votes { get; set; } = new List<PlayerVote>();
 
     public GameRoom(string name)
     {
-        Id = GenerateRandomId();
+        ExternalId = GenerateRandomId();
         Name = name;
     }
 

@@ -1,4 +1,5 @@
-﻿using PlanningPoker.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
@@ -6,64 +7,81 @@ namespace PlanningPoker.Data;
 //[UsedImplicitly]
 public class DataRepository : IDataRepository
 {
-    //public static ICollection<Player> Players = new List<Player>();
-    private static readonly IDictionary<string, GameRoom> GameRooms = new Dictionary<string, GameRoom>();
+    private readonly PlanningPokerDbContext _dbContext;
+
+    public DataRepository(PlanningPokerDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public GameRoom CreateGameRoom(string roomName)
     {
         var gameRoom = new GameRoom(roomName);
-        GameRooms.Add(gameRoom.Id, gameRoom);
+        _dbContext.GameRooms.Add(gameRoom);
+        _dbContext.SaveChanges();
+        
         return gameRoom;
     }
 
     public ICollection<GameRoom> ListGameRooms()
     {
-        return GameRooms.Values;
+        return _dbContext.GameRooms
+            .AsNoTracking()
+            .Include(gameRoom => gameRoom.Players)
+            .Include(gameRoom => gameRoom.Votes)
+            .ToList();
     }
 
     public GameRoom? GetGameRoomById(string roomId)
     {
-        return GameRooms.ContainsKey(roomId) ? GameRooms[roomId] : null;
+        return _dbContext.GameRooms
+            .AsNoTracking()
+            .Include(gameRoom => gameRoom.Players)
+            .Include(gameRoom => gameRoom.Votes)
+            .FirstOrDefault(gameRoom => gameRoom.ExternalId == roomId);
     }
-
-    // public GameRoom? AddPlayer(string roomId, Player player)
-    // {
-    //     var gameRoom = GameRooms[roomId];
-    //     gameRoom?.Players.Add(player);
-    //     return gameRoom;
-    // }
     
     public GameRoom AddPlayer(string roomId, string playerName)
     {
-        var gameRoom = GameRooms[roomId];
+        var gameRoom = _dbContext.GameRooms.First(gameRoom => gameRoom.ExternalId == roomId);
         gameRoom.Players.Add(new Player(playerName));
+        _dbContext.SaveChanges();
+        
         return gameRoom;
     }
 
-    // public ICollection<Player> ListUsers()
-    // {
-    //     var players = GameRooms.Values.SelectMany(gameRoom => gameRoom.Players).ToList();
-    //     return players;
-    // }
-    
     public ICollection<Player> ListPlayersInRoom(string roomId)
     {
-        var players = GameRooms[roomId].Players.ToList();
+        var gameRoom = _dbContext.GameRooms
+            .AsNoTracking()
+            .Include(gameRoom => gameRoom.Players)
+            .First(gameRoom => gameRoom.ExternalId == roomId);
+        var players = gameRoom.Players.ToList();
+        
         return players;
     }
     
     public GameRoom RemovePlayer(string roomId, string playerId)
     {
-        var gameRoom = GameRooms[roomId];
-        var player = gameRoom.Players.First(player => player.Id == playerId);
-        gameRoom.Players.Remove(player);
+        var gameRoom = _dbContext.GameRooms
+            .Include(gameRoom => gameRoom.Players)
+            .First(gameRoom => gameRoom.ExternalId == roomId);
+        var player = gameRoom.Players.First(player => player.ExternalId == playerId);
+        
+        _dbContext.Remove(player);
+        _dbContext.SaveChanges();
+        
         return gameRoom;
     }
 
     public GameRoom RemoveAllPlayers(string roomId)
     {
-        var gameRoom = GameRooms[roomId];
-        gameRoom.Players.Clear();
+        var gameRoom = _dbContext.GameRooms
+            .Include(gameRoom => gameRoom.Players)
+            .First(gameRoom => gameRoom.ExternalId == roomId);
+        
+        _dbContext.RemoveRange(gameRoom.Players);
+        _dbContext.SaveChanges();
 
         return gameRoom;
     }
@@ -79,41 +97,72 @@ public class DataRepository : IDataRepository
     {
         var players = ListPlayersInRoom(roomId);
         
-        return players.Any(player => player.Id == playerId);
+        return players.Any(player => player.ExternalId == playerId);
     }
 
     public bool RoomNameExists(string roomName)
     {
-        return GameRooms.Values.Any(gameRoom => gameRoom.Name == roomName);
+        return _dbContext.GameRooms.Any(gameRoom => gameRoom.Name == roomName);
     }
     
     public bool RoomIdExists(string roomId)
     {
-        return GameRooms.ContainsKey(roomId);
+        return _dbContext.GameRooms.Any(gameRoom => gameRoom.ExternalId == roomId);
+    }
+
+    public bool VoteExists(string roomId, string playerId)
+    {
+        var gameRoom = GetGameRoomById(roomId);
+        return gameRoom!.Votes.Any(vote => vote.PlayerId == playerId);
     }
 
     public void DeleteAllRooms()
     {
-        GameRooms.Clear();
+        _dbContext.RemoveRange(_dbContext.Players);
+        _dbContext.RemoveRange(_dbContext.PlayerVotes);
+        _dbContext.RemoveRange(_dbContext.GameRooms);
+        _dbContext.SaveChanges();
     }
 
     public void DeleteRoom(string roomId)
     {
-        GameRooms.Remove(roomId);
+        var gameRoom = _dbContext.GameRooms.First(gameRoom => gameRoom.ExternalId == roomId);
+        
+        RemoveAllPlayers(roomId);
+        ClearVotes(roomId);
+        
+        _dbContext.GameRooms.Remove(gameRoom);
+        _dbContext.SaveChanges();
     }
 
-    public GameRoom Vote(string roomId, string playerId, PlayerVote vote)
+    public GameRoom Vote(string roomId, string playerId, VotingCard vote)
     {
-        var gameRoom = GameRooms[roomId];
-        gameRoom.Votes[playerId] = vote;
+        var gameRoom = _dbContext.GameRooms
+            .Include(gameRoom => gameRoom.Votes)
+            .First(gameRoom => gameRoom.ExternalId == roomId);
+        
+        if (VoteExists(roomId, playerId))
+        {
+            var existingVote = gameRoom.Votes.First(playerVote => playerVote.PlayerId == playerId);
+            existingVote.Value = vote;
+        }
+        else
+        {
+            gameRoom.Votes.Add(new PlayerVote(playerId, vote));
+        }
+        
+        _dbContext.SaveChanges();
 
         return gameRoom;
     }
 
     public GameRoom ClearVotes(string roomId)
     {
-        var gameRoom = GameRooms[roomId];
-        gameRoom.Votes.Clear();
+        var gameRoom = _dbContext.GameRooms
+            .Include(gameRoom => gameRoom.Votes)
+            .First(gameRoom => gameRoom.ExternalId == roomId);
+        _dbContext.RemoveRange(gameRoom.Votes);
+        _dbContext.SaveChanges();
 
         return gameRoom;
     }

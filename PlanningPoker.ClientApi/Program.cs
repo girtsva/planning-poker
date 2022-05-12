@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PlanningPoker.Data;
 using PlanningPoker.Data.Interfaces;
@@ -39,6 +40,11 @@ try
         options.IncludeXmlComments(xmlPath);
     });
 
+    builder.Services.AddDbContext<PlanningPokerDbContext>(options =>
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("PlanningPoker"));
+    });
+    
     builder.Services.AddTransient<IGameRoomService, GameRoomService>();
     builder.Services.AddTransient<IPlayerService, PlayerService>();
     builder.Services.AddTransient<IDataRepository, DataRepository>();
@@ -79,7 +85,11 @@ try
 }
 catch (Exception e)
 {
-    Log.Fatal(e, "Unhandled exception");
+    // https://github.com/dotnet/runtime/issues/60600
+    if (!e.GetType().Name.Contains("StopTheHostException"))
+    {
+        Log.Fatal(e, "Unhandled exception");
+    }
 }
 finally
 {

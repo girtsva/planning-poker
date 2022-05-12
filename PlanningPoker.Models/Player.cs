@@ -1,13 +1,17 @@
+using System.Text.Json.Serialization;
+
 namespace PlanningPoker.Models;
 
 public class Player
 {
-    public string Id { get; init; }
+    [JsonIgnore]
+    public int Id { get; init; }
+    public string ExternalId { get; init; }
     public string Name { get; init; }
     
     public Player(string name)
     {
-        Id = Guid.NewGuid().ToString("N").Replace("-", string.Empty).Substring(2, 10);
+        ExternalId = Guid.NewGuid().ToString("N").Replace("-", string.Empty).Substring(2, 10);
         Name = name;
     }
 }

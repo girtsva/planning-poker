@@ -100,7 +100,7 @@ public class PlayerController : ControllerBase
         [PlayerIdValidation]
         string playerId, 
         [Required]
-        PlayerVote vote)
+        VotingCard vote)
     {
         if (!_playerService.PlayerIdExists(roomId, playerId))
         {

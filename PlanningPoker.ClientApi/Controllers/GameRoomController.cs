@@ -130,7 +130,7 @@ public class GameRoomController : ControllerBase
     ///     Shows voting card values (e.g., Fibonacci number sequence).
     /// </summary>
     /// <returns>Array of voting card values.</returns>
-    [ProducesResponseType(typeof(Array), 200)]
+    [ProducesResponseType(typeof(ICollection<int>), 200)]
     [HttpGet]
     [Route("VotingCards")]
     public IActionResult Show()
