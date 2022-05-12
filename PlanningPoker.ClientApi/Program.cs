@@ -85,6 +85,7 @@ try
 }
 catch (Exception e)
 {
+    // https://github.com/dotnet/runtime/issues/60600
     if (!e.GetType().Name.Contains("StopTheHostException"))
     {
         Log.Fatal(e, "Unhandled exception");

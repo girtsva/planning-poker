@@ -53,6 +53,7 @@ public class DataRepository : IDataRepository
     public ICollection<Player> ListPlayersInRoom(string roomId)
     {
         var gameRoom = _dbContext.GameRooms
+            .AsNoTracking()
             .Include(gameRoom => gameRoom.Players)
             .First(gameRoom => gameRoom.ExternalId == roomId);
         var players = gameRoom.Players.ToList();
