@@ -12,6 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\PlanningPoker.ApiModels\PlanningPoker.ApiModels.csproj" />
         <ProjectReference Include="..\PlanningPoker.Common\PlanningPoker.Common.csproj" />
         <ProjectReference Include="..\PlanningPoker.Models\PlanningPoker.Models.csproj" />
     </ItemGroup>

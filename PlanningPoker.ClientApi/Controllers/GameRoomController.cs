@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using PlanningPoker.Models;
+using PlanningPoker.ApiModels.Response;
 using PlanningPoker.Services.Interfaces;
 using PlanningPoker.Validation;
 
@@ -24,7 +24,7 @@ public class GameRoomController : ControllerBase
     /// <response code="201">Created: confirms the room is created and returns game room object</response>
     /// <response code="400">Bad Request: if incorrectly entered roomName or if room with the specified name already exists</response>
     /// <returns>Instance of created game room.</returns>
-    [ProducesResponseType(typeof(GameRoom), 201)]
+    [ProducesResponseType(typeof(GameRoomResponse), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
     public IActionResult Create(
@@ -50,7 +50,7 @@ public class GameRoomController : ControllerBase
     /// <param name="roomId">The id of the room to search for</param>
     /// <response code="200">Success: Returns the found room</response>
     /// <response code="400">Bad Request: if room id is not valid or the room with the specified id does not exist</response>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet]
     [Route("{roomId}")]
@@ -67,7 +67,7 @@ public class GameRoomController : ControllerBase
     /// <param name="roomId">The id of game room for which to show the players</param>
     /// <response code="200">Success: Returns the list of players</response>
     /// <response code="400">Bad Request: if room id is not valid or the room with the specified id does not exist</response>
-    [ProducesResponseType(typeof(List<Player>), 200)]
+    [ProducesResponseType(typeof(List<PlayerResponse>), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet]
     [Route("{roomId}")]
@@ -85,7 +85,7 @@ public class GameRoomController : ControllerBase
     /// <response code="200">Success: All players are deleted</response>
     /// <response code="400">Bad Request: if room id is not valid or the room with the specified id does not exist</response>
     /// <returns>Instance of updated game room.</returns>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpDelete]
     [Route("{roomId}")]
@@ -113,7 +113,7 @@ public class GameRoomController : ControllerBase
     /// <param name="roomId">The id of the room to delete</param>
     /// <response code="200">Success: Specified room is deleted</response>
     /// <response code="400">Bad Request: if room id is not valid or the room with the specified id does not exist</response>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpDelete]
     [Route("{roomId}")]
@@ -145,7 +145,7 @@ public class GameRoomController : ControllerBase
     /// <response code="200">Success: Votes in the specified room are deleted</response>
     /// <response code="400">Bad Request: if room id is not valid or the room with the specified id does not exist</response>
     /// <returns>Instance of updated game room.</returns>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpDelete]
     [Route("{roomId}")]

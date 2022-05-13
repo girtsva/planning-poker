@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using PlanningPoker.ApiModels.Response;
 using PlanningPoker.Common.Models;
-using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 using PlanningPoker.Validation;
 
@@ -31,7 +31,7 @@ public class PlayerController : ControllerBase
     /// if room with the specified id does not exist</response>
     /// <response code="409">Conflict: if player with the specified name already exists in the specified room</response>
     /// <returns>Updated instance of game room.</returns>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(string), 409)]
     [HttpPost]
@@ -61,7 +61,7 @@ public class PlayerController : ControllerBase
     /// if room with the specified id does not exist or
     /// if player with the specified id does not exist in the specified room</response>
     /// <returns>Updated instance of game room.</returns>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpDelete]
     [Route("Leave/Room/{roomId}/{playerId}")]
@@ -91,7 +91,7 @@ public class PlayerController : ControllerBase
     /// if room with the specified id does not exist or
     /// if player with the specified id does not exist in the specified room</response>
     /// <returns>Updated instance of game room.</returns>
-    [ProducesResponseType(typeof(GameRoom), 200)]
+    [ProducesResponseType(typeof(GameRoomResponse), 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPut]
     [Route("Vote/{roomId}/{playerId}")]

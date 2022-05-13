@@ -6,8 +6,8 @@ namespace PlanningPoker.ApiModels.Response;
 [UsedImplicitly]
 public class GameRoomResponse
 {
-    [JsonPropertyName("Id")]
-    public string? ExternalId { get; set; }
+    //[JsonPropertyName("Id")]
+    public string? Id { get; set; }
     public string? Name { get; set; }
 
     public ICollection<PlayerResponse>? Players { get; set; }

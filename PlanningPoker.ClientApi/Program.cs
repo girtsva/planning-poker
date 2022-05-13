@@ -1,4 +1,5 @@
 using System.Reflection;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PlanningPoker.Data;
@@ -55,6 +56,7 @@ try
     //builder.Services.AddScoped<IDataRepository, DataRepository>();
 
     var app = builder.Build();
+    app.Services.GetService<IMapper>()!.ConfigurationProvider.AssertConfigurationIsValid();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -87,8 +89,9 @@ try
 }
 catch (Exception e)
 {
+    // This exception is intentionally suppressed, as it seems to be a design flaw on .NET 6.0
+    // and is thrown on running EF Core Migration or Update command
     // https://github.com/dotnet/runtime/issues/60600
-    // Todo: add notes
     if (!e.GetType().Name.Contains("StopTheHostException"))
     {
         Log.Fatal(e, "Unhandled exception");
