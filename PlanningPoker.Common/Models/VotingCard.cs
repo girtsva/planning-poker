@@ -1,4 +1,4 @@
-namespace PlanningPoker.Models;
+namespace PlanningPoker.Common.Models;
 
 public enum VotingCard
 {

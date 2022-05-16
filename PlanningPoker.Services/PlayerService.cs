@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
+using PlanningPoker.ApiModels.Response;
+using PlanningPoker.Common.Models;
 using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
@@ -11,12 +14,14 @@ public class PlayerService : IPlayerService
     //private readonly IPlayerRepository _playerRepository;
     private readonly IDataRepository _dataRepository;
     private readonly ILogger<GameRoomService> _logger;
+    private readonly IMapper _mapper;
 
-    public PlayerService(IDataRepository dataRepository, ILogger<GameRoomService> logger) //IPlayerRepository playerRepository
+    public PlayerService(IDataRepository dataRepository, ILogger<GameRoomService> logger, IMapper mapper) //IPlayerRepository playerRepository
     {
         //_playerRepository = playerRepository;
         _dataRepository = dataRepository;
         _logger = logger;
+        _mapper = mapper;
     }
 
     // public Player CreatePlayer(string playerName)
@@ -60,11 +65,15 @@ public class PlayerService : IPlayerService
         return _dataRepository.PlayerIdExists(roomId, playerId);
     }
 
-    public GameRoom Vote(string roomId, string playerId, VotingCard vote)
+    public GameRoomResponse Vote(string roomId, string playerId, VotingCard vote)
     {
         var gameRoom = _dataRepository.Vote(roomId, playerId, vote);
         _logger.LogInformation("Storing vote [{Vote}] of player with id [{PlayerId}] in a room with id [{RoomId}]," +
                                "returning game room object [{@GameRoom}]", vote, playerId, roomId, gameRoom);
-        return gameRoom;
+
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogInformation("Receiving transformed room with id [{RoomId}], room response object [{@Room}]", roomId, response);
+        
+        return response;
     }
 }

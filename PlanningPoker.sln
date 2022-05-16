@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "script", "script", "{6781B0
 		scripts\docker-compose.yml = scripts\docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.ApiModels", "PlanningPoker.ApiModels\PlanningPoker.ApiModels.csproj", "{2EFD3169-D7E2-4AA1-A489-4A86454DC2B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Common", "PlanningPoker.Common\PlanningPoker.Common.csproj", "{6F9BEE65-7765-4FF7-B524-C48F952E4D71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,5 +63,13 @@ Global
 		{5C57E21E-8857-4683-A9DC-2319B3EC07B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C57E21E-8857-4683-A9DC-2319B3EC07B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C57E21E-8857-4683-A9DC-2319B3EC07B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EFD3169-D7E2-4AA1-A489-4A86454DC2B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EFD3169-D7E2-4AA1-A489-4A86454DC2B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EFD3169-D7E2-4AA1-A489-4A86454DC2B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EFD3169-D7E2-4AA1-A489-4A86454DC2B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F9BEE65-7765-4FF7-B524-C48F952E4D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F9BEE65-7765-4FF7-B524-C48F952E4D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F9BEE65-7765-4FF7-B524-C48F952E4D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F9BEE65-7765-4FF7-B524-C48F952E4D71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

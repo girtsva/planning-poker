@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PlanningPoker.Common.Models;
 using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
 
-//[UsedImplicitly]
 public class DataRepository : IDataRepository
 {
     private readonly PlanningPokerDbContext _dbContext;

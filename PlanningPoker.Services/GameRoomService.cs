@@ -1,75 +1,102 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
+using PlanningPoker.ApiModels.Response;
+using PlanningPoker.Common.Models;
 using PlanningPoker.Data.Interfaces;
-using PlanningPoker.Models;
 using PlanningPoker.Services.Interfaces;
 
 namespace PlanningPoker.Services;
 
 public class GameRoomService : IGameRoomService
 {
-    //private readonly GameRoom _gameRoom;
     private readonly IDataRepository _dataRepository;
     private readonly ILogger<GameRoomService> _logger;
+    private readonly IMapper _mapper;
 
-    public GameRoomService(IDataRepository dataRepository, ILogger<GameRoomService> logger)
+    public GameRoomService(IDataRepository dataRepository, ILogger<GameRoomService> logger, IMapper mapper)
     {
         _dataRepository = dataRepository;
         _logger = logger;
-        //_gameRoom = gameRoom;
+        _mapper = mapper;
     }
 
-    public GameRoom CreateGameRoom(string roomName)
+    public GameRoomResponse CreateGameRoom(string roomName)
     {
         var gameRoom = _dataRepository.CreateGameRoom(roomName);
-        _logger.LogInformation("Creating room [{RoomName}], room object [{@Room}]", roomName, gameRoom);
-        return gameRoom;
+        _logger.LogDebug("Creating room [{RoomName}], room object [{@Room}]", roomName, gameRoom);
+        
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogDebug("Receiving transformed room with name [{RoomName}], room response object [{@Room}]", roomName, response);
+        
+        return response;
     }
 
-    public ICollection<GameRoom> ListGameRooms()
+    public ICollection<GameRoomResponse> ListGameRooms()
     {
         var gameRooms = _dataRepository.ListGameRooms();
-        _logger.LogInformation("Receiving room objects [{@Rooms}]", gameRooms);
-        return gameRooms;
+        _logger.LogDebug("Receiving room objects [{@Rooms}]", gameRooms);
+
+        //var response = gameRooms.Select(gameRoom => _mapper.Map<GameRoomResponse>(gameRoom)).ToList();
+        var response = _mapper.Map<ICollection<GameRoomResponse>>(gameRooms);
+        _logger.LogDebug("Receiving transformed game room response objects [{@GameRooms}]", response);
+        
+        return response;
     }
 
-    public GameRoom? GetGameRoomById(string roomId)
+    public GameRoomResponse? GetGameRoomById(string roomId)
     {
         var gameRoom = _dataRepository.GetGameRoomById(roomId);
-        _logger.LogInformation("Receiving room with id [{RoomId}], room object [{@Room}]", roomId, gameRoom);
-        return gameRoom;
+        _logger.LogDebug("Receiving room with id [{RoomId}], room object [{@Room}]", roomId, gameRoom);
+        
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogDebug("Receiving transformed room with id [{RoomId}], room response object [{@Room}]", roomId, response);
+        
+        return response;
     }
 
-    // public GameRoom? AddPlayer(string roomId, Player player)
-    // {
-    //     return _dataRepository.AddPlayer(roomId, player);
-    // }
-    
-    public GameRoom? AddPlayer(string roomId, string playerName)
+    public GameRoomResponse? AddPlayer(string roomId, string playerName)
     {
         var gameRoom = _dataRepository.AddPlayer(roomId, playerName);
-        _logger.LogInformation("Adding player [{PlayerName}] to room id [{RoomId}], receiving room object [{@Room}]", playerName, roomId, gameRoom);
-        return gameRoom;
+        _logger.LogDebug("Adding player [{PlayerName}] to room id [{RoomId}], receiving room object [{@Room}]", playerName, roomId, gameRoom);
+
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogDebug("Receiving transformed room with id [{RoomId}], room response object [{@Room}]", roomId, response);
+        
+        return response;
     }
 
-    public ICollection<Player> ListPlayersInRoom(string roomId)
+    public ICollection<PlayerResponse> ListPlayersInRoom(string roomId)
     {
         var players = _dataRepository.ListPlayersInRoom(roomId);
-        _logger.LogInformation("Receiving player objects [{@Players}] for room id [{RoomId}]", players, roomId);
-        return players;
+        _logger.LogDebug("Receiving player objects [{@Players}] for room id [{RoomId}]", players, roomId);
+
+        //var response = players.Select(player => _mapper.Map<PlayerResponse>(player)).ToList();
+        var response = _mapper.Map<ICollection<PlayerResponse>>(players);
+        _logger.LogDebug("Receiving transformed player response objects [{@Players}] for room id [{RoomId}]", response, roomId);
+        
+        return response;
     }
 
-    public GameRoom? RemovePlayer(string roomId, string playerId)
+    public GameRoomResponse? RemovePlayer(string roomId, string playerId)
     {
         var gameRoom = _dataRepository.RemovePlayer(roomId, playerId);
-        _logger.LogInformation("Removing player with id [{PlayerId}] from room id [{RoomId}], receiving room object [{@Room}]", playerId, roomId, gameRoom);
-        return gameRoom;
+        _logger.LogDebug("Removing player with id [{PlayerId}] from room id [{RoomId}], receiving room object [{@Room}]", playerId, roomId, gameRoom);
+
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogDebug("Receiving transformed room with id [{RoomId}], room response object [{@Room}]", roomId, response);
+        
+        return response;
     }
 
-    public GameRoom RemoveAllPlayers(string roomId)
+    public GameRoomResponse RemoveAllPlayers(string roomId)
     {
         var gameRoom = _dataRepository.RemoveAllPlayers(roomId);
-        _logger.LogInformation("Removing all players from room id [{RoomId}], receiving room object [{@Room}]", roomId, gameRoom);
-        return gameRoom;
+        _logger.LogDebug("Removing all players from room id [{RoomId}], receiving room object [{@Room}]", roomId, gameRoom);
+
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogDebug("Receiving transformed room with id [{RoomId}], room response object [{@Room}]", roomId, response);
+        
+        return response;
     }
 
     public bool RoomNameExists(string roomName)
@@ -99,14 +126,14 @@ public class GameRoomService : IGameRoomService
         return Enum.GetValues(typeof(VotingCard));
     }
 
-    public GameRoom ClearVotes(string roomId)
+    public GameRoomResponse ClearVotes(string roomId)
     {
         _logger.LogInformation("Clearing votes in room with id [{RoomName}]", roomId);
-        return _dataRepository.ClearVotes(roomId);
+        var gameRoom = _dataRepository.ClearVotes(roomId);
+        
+        var response = _mapper.Map<GameRoomResponse>(gameRoom);
+        _logger.LogDebug("Receiving transformed room with id [{RoomId}], room response object [{@Room}]", roomId, response);
+        
+        return response;
     }
-
-    // public bool VoteExists(PlayerVote vote)
-    // {
-    //     return Enum.IsDefined(typeof(PlayerVote), vote);
-    // }
 }

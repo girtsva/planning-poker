@@ -1,10 +1,12 @@
 using System.Reflection;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PlanningPoker.Data;
 using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Services;
 using PlanningPoker.Services.Interfaces;
+using PlanningPoker.Services.Mapping;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -23,6 +25,7 @@ try
     // Add services to the container.
 
     builder.Services.AddControllers();
+    builder.Services.AddAutoMapper(typeof(MappingProfile));
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
@@ -53,6 +56,7 @@ try
     //builder.Services.AddScoped<IDataRepository, DataRepository>();
 
     var app = builder.Build();
+    app.Services.GetService<IMapper>()!.ConfigurationProvider.AssertConfigurationIsValid();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -85,6 +89,8 @@ try
 }
 catch (Exception e)
 {
+    // This exception is intentionally suppressed, as it seems to be a design flaw on .NET 6.0
+    // and is thrown on running EF Core Migration or Update command
     // https://github.com/dotnet/runtime/issues/60600
     if (!e.GetType().Name.Contains("StopTheHostException"))
     {

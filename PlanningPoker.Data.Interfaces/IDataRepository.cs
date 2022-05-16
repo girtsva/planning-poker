@@ -1,3 +1,4 @@
+using PlanningPoker.Common.Models;
 using PlanningPoker.Models;
 
 namespace PlanningPoker.Data.Interfaces;
