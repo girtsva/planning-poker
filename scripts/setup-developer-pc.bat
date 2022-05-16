@@ -10,7 +10,7 @@ echo [1mWARNING! [0m[91mThis script will install or/and[1m UPGRADE[0m follo
 echo [0m
 echo Chocolatey^
 ::%NLM%NodeJS^
-::%NLM%Docker^
+%NLM%Docker^
 %NLM%NPM^
 %NLM%dotnet
 echo [91m[1m
@@ -44,17 +44,17 @@ cup dotnet-6.0-sdk
 call refreshenv
 dotnet tool install --global dotnet-ef
 
-::cinst docker-desktop
-::call  refreshenv
+cinst docker-desktop
+call  refreshenv
 
-::choco upgrade docker-desktop
-::call  refreshenv
+choco upgrade docker-desktop
+call  refreshenv
 
 ::cinst nodejs-lts
 ::call  refreshenv
 ::choco upgrade nodejs-lts
 ::call npm install -g npm
-call refreshenv
+::call refreshenv
 
 
 :END
