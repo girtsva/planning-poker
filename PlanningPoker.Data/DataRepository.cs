@@ -5,7 +5,6 @@ using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
 
-//[UsedImplicitly]
 public class DataRepository : IDataRepository
 {
     private readonly PlanningPokerDbContext _dbContext;
