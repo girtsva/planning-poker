@@ -10,6 +10,7 @@ public class GameRoom
     public int Id { get; init; }
     public string ExternalId { get; init; }   // random 10 letters on room creating
     public string Name { get; set; }
+    public DateTime CreatedOn { get; init; }
 
     public ICollection<Player> Players { get; set; } = new List<Player>();
     //public IDictionary<string, VotingCard> Votes { get; set; } = new Dictionary<string, VotingCard>();
@@ -19,6 +20,7 @@ public class GameRoom
     {
         ExternalId = GenerateRandomId();
         Name = name;
+        CreatedOn = DateTime.UtcNow;
     }
 
     private static string GenerateRandomId()
