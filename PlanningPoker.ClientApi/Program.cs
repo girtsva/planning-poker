@@ -48,6 +48,8 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("PlanningPoker"));
     });
     
+    builder.Services.AddHostedService<GameRoomExpirationService>();
+    
     builder.Services.AddTransient<IGameRoomService, GameRoomService>();
     builder.Services.AddTransient<IPlayerService, PlayerService>();
     builder.Services.AddTransient<IDataRepository, DataRepository>();
