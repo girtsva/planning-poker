@@ -1,0 +1,12 @@
+###
+
+# curl -X 'POST' 
+#  'https://localhost:7281/api/GameRoom/Create?roomName=tesssst' 
+#  -H 'accept: text/plain' 
+#  -d ''
+POST https://planningpoker1.azurewebsites.net/api/GameRoom/Create?roomName=tesssst
+accept: text/plain
+Content-Type: application/x-www-form-urlencoded
+
+###
+
