@@ -10,7 +10,7 @@ public class MappingProfile : Profile
     {
         CreateMap<GameRoom, GameRoomResponse>()
             .ForMember(dest => dest.Id, opt 
-                => opt.MapFrom(gameRoom => gameRoom.ExternalId));;
+                => opt.MapFrom(gameRoom => gameRoom.ExternalId));
         CreateMap<Player, PlayerResponse>()
             .ForMember(dest => dest.Id, opt 
                 => opt.MapFrom(player => player.ExternalId));
