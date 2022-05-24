@@ -1,10 +1,13 @@
 using System.Reflection;
 using AutoMapper;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PlanningPoker.Data;
 using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Services;
+using PlanningPoker.Services.HealthChecks;
 using PlanningPoker.Services.Interfaces;
 using PlanningPoker.Services.Mapping;
 using Serilog;
@@ -23,7 +26,9 @@ try
         .ReadFrom.Configuration(ctx.Configuration));
 
     // Add services to the container.
-
+    builder.Services.AddHealthChecks()
+        .AddSqlServer(builder.Configuration.GetConnectionString("PlanningPoker"))
+        .AddCheck<PpHealthCheck>("ServiceHealthCheck");
     builder.Services.AddControllers();
     builder.Services.AddAutoMapper(typeof(MappingProfile));
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -65,6 +70,15 @@ try
         var dataContext = scope.ServiceProvider.GetRequiredService<PlanningPokerDbContext>();
         dataContext.Database.Migrate();
     }
+    
+    app.MapHealthChecks("/health", new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+    app.MapHealthChecks("/health/7dc0e1f8-fa69-444c-817d-f639f9ff0336", new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
     
     app.Services.GetService<IMapper>()!.ConfigurationProvider.AssertConfigurationIsValid();
 
