@@ -48,7 +48,31 @@ public class JiraDataController : ControllerBase
     {
         var result = await _jiraClientService.GetIssuesByProject3(projectName);
         
-        return Ok(result.ToString());
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> IssuesByProject4(string projectName)
+    {
+        var result = await _jiraClientService.GetIssuesByProject4(projectName);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> IssuesByProject6(string projectName)
+    {
+        var result = await _jiraClientService.GetIssuesByProject6(projectName);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> IssuesByProject7(string projectName)
+    {
+        var result = await _jiraClientService.GetIssuesByProject7(projectName);
+        
+        return Ok(result);
     }
     
     [HttpGet]
@@ -60,8 +84,64 @@ public class JiraDataController : ControllerBase
     
     [HttpGet]
     [Route("{issueKey}")]
-    public IActionResult Issue2(string issueKey)
+    public async Task <IActionResult> Issue2(string issueKey)
     {
-        return Ok(_jiraClientService.GetIssue2(issueKey).Result.ToString());
+        var result = await _jiraClientService.GetIssue2(issueKey);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("{issueKey}")]
+    public async Task <IActionResult> Issue3(string issueKey)
+    {
+        var result = await _jiraClientService.GetIssue3(issueKey);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("{issueKey}")]
+    public IActionResult IssueDescription(string issueKey)
+    {
+        var result = _jiraClientService.Description(issueKey);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("{issueKey}")]
+    public IActionResult Issue4(string issueKey)
+    {
+        var result = _jiraClientService.GetIssue4(issueKey);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("{issueKey}")]
+    public IActionResult Issue5(string issueKey)
+    {
+        var result = _jiraClientService.GetIssue5(issueKey);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("{issueKey}")]
+    public IActionResult Issue6(string issueKey)
+    {
+        var result = _jiraClientService.GetIssue6(issueKey);
+        
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("{issueKey}")]
+    public IActionResult Issue7(string issueKey)
+    {
+        var result = _jiraClientService.GetIssue7(issueKey);
+        
+        return Ok(result);
     }
 }

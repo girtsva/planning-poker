@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Atlassian.SDK" Version="13.0.0" />
+      <PackageReference Include="morelinq" Version="3.3.2" />
     </ItemGroup>
 
     <ItemGroup>
