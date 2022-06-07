@@ -141,7 +141,7 @@ public class JiraClientService : IJiraClientService
         return TransformIssues(shortIssues);
     }
 
-    private object TransformIssues(Root shortIssues)
+    private List<(string id, string key, string summary, List<string> textValues)> TransformIssues(Root shortIssues)
     {
         var query =
             from issue in shortIssues!.issues
@@ -155,13 +155,13 @@ public class JiraClientService : IJiraClientService
             into contentsGroupedByIssue
             let flattenedContents = contentsGroupedByIssue.SelectMany(c => c).ToList()
             let textValues = flattenedContents.Select(c => c.text).ToList()
-            select new
-            {
-                id = contentsGroupedByIssue.Key.id,
-                key = contentsGroupedByIssue.Key.key,
-                summary = contentsGroupedByIssue.Key.summary,
-                description = textValues //string.Join(Environment.NewLine, textValues)
-            };
+            select 
+            (
+                contentsGroupedByIssue.Key.id,
+                contentsGroupedByIssue.Key.key,
+                contentsGroupedByIssue.Key.summary,
+                textValues //string.Join(Environment.NewLine, textValues)
+            );
 
         return query.ToList();
     }
@@ -339,16 +339,17 @@ public class JiraClientService : IJiraClientService
         return query.First();
     }
 
-    public object GetIssue7(string issueKey)
+    public async Task<object> GetIssue7(string issueKey)
     {
         // var jqlString = "issue=" + issueKey + "&fields=summary,description";
         //
         // var fullIssue = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
         //     $"{_jiraPath}/search?jql={jqlString}");
 
-        var shortIssue = GetIssue3(issueKey).GetAwaiter().GetResult();
+        var shortIssue = await GetIssue3(issueKey);
 
-        return TransformIssues(shortIssue);
+        return TransformIssues(shortIssue).First(t =>
+            string.Equals(t.key, issueKey, StringComparison.InvariantCultureIgnoreCase));
     }
     
     // IOrderedQueryable<Issue> issues = from i in jira.Issues.Queryable
