@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using PlanningPoker.Common.Options;
 using PlanningPoker.Services.Interfaces;
 using PlanningPoker.Services.JiraClient;
@@ -138,10 +139,10 @@ public class JiraDataController : ControllerBase
     
     [HttpGet]
     [Route("{issueKey}")]
-    public IActionResult Issue7(string issueKey)
+    public async Task<IActionResult> Issue7(string issueKey)
     {
-        var result = _jiraClientService.GetIssue7(issueKey);
+        var result = await _jiraClientService.GetIssue7(issueKey);
         
-        return Ok(result);
+        return Ok(JsonConvert.SerializeObject(result));
     }
 }

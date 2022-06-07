@@ -21,5 +21,5 @@ public interface IJiraClientService
     object GetIssue4(string issueKey);
     object GetIssue5(string issueKey);
     object GetIssue6(string issueKey);
-    object GetIssue7(string issueKey);
+    Task<object> GetIssue7(string issueKey);
 }
