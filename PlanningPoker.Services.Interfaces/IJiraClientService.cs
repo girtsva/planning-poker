@@ -1,5 +1,6 @@
 using Atlassian.Jira;
 using Newtonsoft.Json.Linq;
+using PlanningPoker.ApiModels.Response;
 using PlanningPoker.Common.Models.JiraClient;
 
 namespace PlanningPoker.Services.Interfaces;
@@ -7,7 +8,7 @@ namespace PlanningPoker.Services.Interfaces;
 public interface IJiraClientService
 {
     Task<IEnumerable<Project>> GetProjects();
-    Task<JToken> GetProjects2();
+    Task<ICollection<JiraProjectResponse>> GetProjects2();
     Issue[] GetIssuesByProject();
     Task<IPagedQueryResult<Issue>> GetIssuesByProject2(string projectName);
     Task<object> GetIssuesByProject3(string projectName);

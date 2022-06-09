@@ -27,9 +27,11 @@ public class JiraDataController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult Projects2()
+    public async Task<IActionResult> Projects2()
     {
-        return Ok(_jiraClientService.GetProjects2().Result.ToString());
+        var result = await _jiraClientService.GetProjects2();
+        
+        return Ok(result);
     }
     
     [HttpGet]
@@ -143,6 +145,6 @@ public class JiraDataController : ControllerBase
     {
         var result = await _jiraClientService.GetIssue7(issueKey);
         
-        return Ok(JsonConvert.SerializeObject(result));
+        return Ok(result);
     }
 }

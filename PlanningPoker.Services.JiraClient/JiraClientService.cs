@@ -1,8 +1,12 @@
-﻿using Atlassian.Jira;
+﻿using System.Net.Http.Json;
+using System.Web;
+using Atlassian.Jira;
+using AutoMapper;
 using Microsoft.Extensions.Options;
 using MoreLinq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PlanningPoker.ApiModels.Response;
 using PlanningPoker.Common.Models;
 using PlanningPoker.Common.Models.JiraClient;
 using PlanningPoker.Common.Options;
@@ -17,9 +21,11 @@ public class JiraClientService : IJiraClientService
     
     private readonly Jira _jira;
     private readonly string _jiraPath = "rest/api/3";
+    private readonly IMapper _mapper;
 
-    public JiraClientService(IOptions<JiraConnection> jiraOptions)
+    public JiraClientService(IOptions<JiraConnection> jiraOptions, IMapper mapper)
     {
+        _mapper = mapper;
         //_options = options;
         _jira = Jira.CreateRestClient(
             url: jiraOptions.Value.Url,
@@ -35,10 +41,18 @@ public class JiraClientService : IJiraClientService
         return await _jira.Projects.GetProjectsAsync();
     }
     
-    public async Task<JToken> GetProjects2()
+    public async Task<ICollection<JiraProjectResponse>> GetProjects2()
     {
-        return await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
-            $"{_jiraPath}/project?expand=description,lead,issueTypes,url,projectKeys,permissions,insight");
+        var fullProjects = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
+            $"{_jiraPath}/project?expand=lead");
+
+        var shortProjects = JsonConvert.DeserializeObject<List<JiraProject>>(fullProjects.ToString());
+        
+        var response = _mapper.Map<ICollection<JiraProjectResponse>>(shortProjects);
+
+        return response;
+
+        // ?expand options = description,lead,issueTypes,url,projectKeys,permissions,insight
     }
     
     public Atlassian.Jira.Issue[] GetIssuesByProject()
@@ -138,30 +152,29 @@ public class JiraClientService : IJiraClientService
         
         var shortIssues = JsonConvert.DeserializeObject<Root>(fullIssues.ToString());
 
-        return TransformIssues(shortIssues);
+        return MapIssues(shortIssues);
     }
 
-    private List<(string id, string key, string summary, List<string> textValues)> TransformIssues(Root shortIssues)
+    private List<JiraIssueResponse> MapIssues(Root shortIssues) // mapping and flattening
     {
         var query =
             from issue in shortIssues!.issues
-            let issueContents = issue.fields?.description?.content.ToList()
-            from content in issueContents
-            let issueAllContents =
-                MoreEnumerable
-                    .TraverseDepthFirst(content, topLevelContent => topLevelContent?.content ?? new List<Content>())
-                    .Where(c => c.text is not null)
-            group issueAllContents by new { issue.id, issue.key, issue.fields.summary }
-            into contentsGroupedByIssue
-            let flattenedContents = contentsGroupedByIssue.SelectMany(c => c).ToList()
-            let textValues = flattenedContents.Select(c => c.text).ToList()
-            select 
-            (
-                contentsGroupedByIssue.Key.id,
-                contentsGroupedByIssue.Key.key,
-                contentsGroupedByIssue.Key.summary,
-                textValues //string.Join(Environment.NewLine, textValues)
-            );
+            let issueContents = issue.fields?.description?.content.ToList() ?? new List<Content>()
+            let textValues = (
+                from content in issueContents
+                let issueAllContents =
+                    MoreEnumerable
+                        .TraverseDepthFirst(content, topLevelContent => topLevelContent?.content ?? new List<Content>())
+                        .Where(c => c.text is not null)
+                select issueAllContents.Select(c => c.text))
+                .SelectMany(v => v).ToList()
+            select new JiraIssueResponse()
+                {
+                Id = issue.id,
+                Key = issue.key,
+                Summary = issue.fields.summary,
+                Description = textValues //string.Join(Environment.NewLine, textValues)
+                };
 
         return query.ToList();
     }
@@ -341,15 +354,14 @@ public class JiraClientService : IJiraClientService
 
     public async Task<object> GetIssue7(string issueKey)
     {
-        // var jqlString = "issue=" + issueKey + "&fields=summary,description";
-        //
-        // var fullIssue = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
-        //     $"{_jiraPath}/search?jql={jqlString}");
+        var jqlString = $"issue={HttpUtility.UrlEncode(issueKey)}&fields=summary,description";
+        
+        var fullIssue = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
+            $"{_jiraPath}/search?jql={jqlString}");
 
-        var shortIssue = await GetIssue3(issueKey);
+        var shortIssue = JsonConvert.DeserializeObject<Root>(fullIssue.ToString());
 
-        return TransformIssues(shortIssue).First(t =>
-            string.Equals(t.key, issueKey, StringComparison.InvariantCultureIgnoreCase));
+        return MapIssues(shortIssue).First();
     }
     
     // IOrderedQueryable<Issue> issues = from i in jira.Issues.Queryable
