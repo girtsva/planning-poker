@@ -4,7 +4,7 @@ namespace PlanningPoker.Services.Interfaces;
 
 public interface IJiraClientService
 {
-    Task<ICollection<JiraProjectResponse>> GetProjects2();
-    Task<object> GetIssuesByProject7(string projectName);
-    Task<object> GetIssue7(string issueKey);
+    Task<ICollection<JiraProjectResponse>> GetProjects();
+    Task<object> GetIssuesByProject(string projectKey);
+    Task<object> GetIssue(string issueKey);
 }

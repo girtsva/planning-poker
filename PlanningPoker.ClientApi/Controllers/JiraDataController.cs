@@ -15,26 +15,26 @@ public class JiraDataController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> Projects2()
+    public async Task<IActionResult> Projects()
     {
-        var result = await _jiraClientService.GetProjects2();
+        var result = await _jiraClientService.GetProjects();
         
         return Ok(result);
     }
     
     [HttpGet]
-    public async Task<IActionResult> IssuesByProject7(string projectName)
+    public async Task<IActionResult> IssuesByProject(string projectKey)
     {
-        var result = await _jiraClientService.GetIssuesByProject7(projectName);
+        var result = await _jiraClientService.GetIssuesByProject(projectKey);
         
         return Ok(result);
     }
     
     [HttpGet]
     [Route("{issueKey}")]
-    public async Task<IActionResult> Issue7(string issueKey)
+    public async Task<IActionResult> Issue(string issueKey)
     {
-        var result = await _jiraClientService.GetIssue7(issueKey);
+        var result = await _jiraClientService.GetIssue(issueKey);
         
         return Ok(result);
     }

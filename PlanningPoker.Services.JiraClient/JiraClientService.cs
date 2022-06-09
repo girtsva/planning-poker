@@ -26,7 +26,7 @@ public class JiraClientService : IJiraClientService
         _mapper = mapper;
     }
     
-    public async Task<ICollection<JiraProjectResponse>> GetProjects2()
+    public async Task<ICollection<JiraProjectResponse>> GetProjects()
     {
         // ?expand options = description,lead,issueTypes,url,projectKeys,permissions,insight
         var fullProjects = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
@@ -39,9 +39,9 @@ public class JiraClientService : IJiraClientService
         return response;
     }
     
-    public async Task<object> GetIssuesByProject7(string projectName)
+    public async Task<object> GetIssuesByProject(string projectKey)
     {
-        var jqlString = "project=" + projectName + "+and+status!=done&fields=summary,description";
+        var jqlString = $"project={HttpUtility.UrlEncode(projectKey)}+and+status!=done&fields=summary,description";
 
         var fullIssues = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
             $"{_jiraPath}/search?jql={jqlString}");
@@ -51,7 +51,7 @@ public class JiraClientService : IJiraClientService
         return MapIssues(shortIssues);
     }
 
-    private List<JiraIssueResponse> MapIssues(Root shortIssues) // mapping and flattening
+    private List<JiraIssueResponse> MapIssues(Root shortIssues) // mapping issue fields and flattening issues
     {
         var query =
             from issue in shortIssues!.issues
@@ -75,7 +75,7 @@ public class JiraClientService : IJiraClientService
         return query.ToList();
     }
 
-    public async Task<object> GetIssue7(string issueKey)
+    public async Task<object> GetIssue(string issueKey)
     {
         var jqlString = $"issue={HttpUtility.UrlEncode(issueKey)}&fields=summary,description";
         
