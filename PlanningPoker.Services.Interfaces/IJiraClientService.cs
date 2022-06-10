@@ -5,6 +5,8 @@ namespace PlanningPoker.Services.Interfaces;
 public interface IJiraClientService
 {
     Task<ICollection<JiraProjectResponse>> GetProjects();
-    Task<object> GetIssuesByProject(string projectKey);
-    Task<object> GetIssue(string issueKey);
+    Task<List<JiraIssueResponse>> GetIssuesByProject(string projectKey);
+    Task<JiraIssueResponse> GetIssue(string issueKey);
+    bool JiraProjectKeyExists(string projectKey);
+    bool JiraIssueKeyExists(string issueKey);
 }

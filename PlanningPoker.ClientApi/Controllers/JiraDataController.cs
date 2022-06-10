@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PlanningPoker.Services.Interfaces;
+using PlanningPoker.Validation;
 
 namespace PlanningPoker.Controllers;
 
@@ -23,7 +24,9 @@ public class JiraDataController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> IssuesByProject(string projectKey)
+    public async Task<IActionResult> IssuesByProject(
+        [JiraProjectKeyValidation]
+        string projectKey)
     {
         var result = await _jiraClientService.GetIssuesByProject(projectKey);
         
@@ -32,7 +35,9 @@ public class JiraDataController : ControllerBase
     
     [HttpGet]
     [Route("{issueKey}")]
-    public async Task<IActionResult> Issue(string issueKey)
+    public async Task<IActionResult> Issue(
+        [JiraIssueKeyValidation]
+        string issueKey)
     {
         var result = await _jiraClientService.GetIssue(issueKey);
         
