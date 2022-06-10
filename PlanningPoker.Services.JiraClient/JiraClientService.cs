@@ -39,51 +39,72 @@ public class JiraClientService : IJiraClientService
         return response;
     }
     
-    public async Task<object> GetIssuesByProject(string projectKey)
+    public async Task<List<JiraIssueResponse>> GetIssuesByProject(string projectKey)
     {
         var jqlString = $"project={HttpUtility.UrlEncode(projectKey)}+and+status!=done&fields=summary,description";
 
         var fullIssues = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
             $"{_jiraPath}/search?jql={jqlString}");
         
-        var shortIssues = JsonConvert.DeserializeObject<Root>(fullIssues.ToString());
+        var shortIssues = JsonConvert.DeserializeObject<JqlSearch>(fullIssues.ToString());
 
         return MapIssues(shortIssues);
     }
 
-    private List<JiraIssueResponse> MapIssues(Root shortIssues) // mapping issue fields and flattening issues
+    private List<JiraIssueResponse> MapIssues(JqlSearch shortIssues) // mapping issue fields and flattening issues
     {
         var query =
-            from issue in shortIssues!.issues
-            let issueContents = issue.fields?.description?.content.ToList() ?? new List<Content>()
+            from issue in shortIssues!.Issues
+            let issueContents = issue.Fields?.Description?.Content.ToList() ?? new List<Content>()
             let textValues = (
                 from content in issueContents
                 let issueAllContents =
                     MoreEnumerable
-                        .TraverseDepthFirst(content, topLevelContent => topLevelContent?.content ?? new List<Content>())
-                        .Where(c => c.text is not null)
-                select issueAllContents.Select(c => c.text))
+                        .TraverseDepthFirst(content, topLevelContent => topLevelContent?.Contents ?? new List<Content>())
+                        .Where(c => c.Text is not null)
+                select issueAllContents.Select(c => c.Text))
                 .SelectMany(v => v).ToList()
             select new JiraIssueResponse()
                 {
-                Id = issue.id,
-                Key = issue.key,
-                Summary = issue.fields.summary,
+                Id = issue.Id,
+                Key = issue.Key,
+                Summary = issue.Fields.Summary,
                 Description = textValues //string.Join(Environment.NewLine, textValues)
                 };
 
         return query.ToList();
     }
 
-    public async Task<object> GetIssue(string issueKey)
+    public async Task<JiraIssueResponse> GetIssue(string issueKey)
     {
         var jqlString = $"issue={HttpUtility.UrlEncode(issueKey)}&fields=summary,description";
         
         var fullIssue = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
             $"{_jiraPath}/search?jql={jqlString}");
 
-        var shortIssue = JsonConvert.DeserializeObject<Root>(fullIssue.ToString());
+        var shortIssue = JsonConvert.DeserializeObject<JqlSearch>(fullIssue.ToString());
 
         return MapIssues(shortIssue).First();
+    }
+    
+    public bool JiraProjectKeyExists(string projectKey)
+    {
+        var projects = GetProjects().GetAwaiter().GetResult();
+        
+        return projects.Any(project => 
+            string.Equals(project.Key, projectKey, StringComparison.InvariantCultureIgnoreCase));
+    }
+    
+    public bool JiraIssueKeyExists(string issueKey)
+    {
+        try
+        {
+            var issue = GetIssue(issueKey).GetAwaiter().GetResult();
+            return issue.Key is not null;
+        }
+        catch (InvalidOperationException e) when (e.Message.ToLowerInvariant().Contains("does not exist"))
+        {
+           return false;
+        }
     }
 }
