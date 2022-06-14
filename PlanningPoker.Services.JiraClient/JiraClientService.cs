@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using Atlassian.Jira;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MoreLinq;
 using Newtonsoft.Json;
@@ -14,27 +15,32 @@ namespace PlanningPoker.Services.JiraClient;
 public class JiraClientService : IJiraClientService
 {
     private readonly Jira _jira;
-    private readonly string _jiraPath = "rest/api/3";
+    private const string JiraPath = "rest/api/3";
     private readonly IMapper _mapper;
+    private readonly ILogger<JiraClientService> _logger;
 
-    public JiraClientService(IOptions<JiraConnection> jiraOptions, IMapper mapper)
+    public JiraClientService(IOptions<JiraConnection> jiraOptions, IMapper mapper, ILogger<JiraClientService> logger)
     {
         _jira = Jira.CreateRestClient(
             url: jiraOptions.Value.Url,
             username: jiraOptions.Value.Username,
             password: jiraOptions.Value.Token);
         _mapper = mapper;
+        _logger = logger;
     }
     
     public async Task<ICollection<JiraProjectResponse>> GetProjects()
     {
         // ?expand options = description,lead,issueTypes,url,projectKeys,permissions,insight
         var fullProjects = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
-            $"{_jiraPath}/project?expand=lead");
+            $"{JiraPath}/project?expand=lead");
+        _logger.LogDebug("Receiving information on JIRA projects");
 
         var shortProjects = JsonConvert.DeserializeObject<List<JiraProject>>(fullProjects.ToString());
+        _logger.LogDebug("Deserializing into JiraProject, projects [{@Projects}]", shortProjects);
         
         var response = _mapper.Map<ICollection<JiraProjectResponse>>(shortProjects);
+        _logger.LogDebug("Receiving list of transformed projects, project response objects [{@Projects}]", response);
 
         return response;
     }
@@ -44,35 +50,17 @@ public class JiraClientService : IJiraClientService
         var jqlString = $"project={HttpUtility.UrlEncode(projectKey)}+and+status!=done&fields=summary,description";
 
         var fullIssues = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
-            $"{_jiraPath}/search?jql={jqlString}");
+            $"{JiraPath}/search?jql={jqlString}");
+        _logger.LogDebug("Receiving information on JIRA issues by specified project key [{Key}]", projectKey);
         
-        var shortIssues = JsonConvert.DeserializeObject<JqlSearch>(fullIssues.ToString());
+        var shortIssues = JsonConvert.DeserializeObject<JqlSearchResult>(fullIssues.ToString());
+        _logger.LogDebug("Deserializing into JqlSearch, issues [{@Issues}]", shortIssues);
 
-        return MapIssues(shortIssues);
-    }
 
-    private List<JiraIssueResponse> MapIssues(JqlSearch shortIssues) // mapping issue fields and flattening issues
-    {
-        var query =
-            from issue in shortIssues!.Issues
-            let issueContents = issue.Fields?.Description?.Content.ToList() ?? new List<Content>()
-            let textValues = (
-                from content in issueContents
-                let issueAllContents =
-                    MoreEnumerable
-                        .TraverseDepthFirst(content, topLevelContent => topLevelContent?.Contents ?? new List<Content>())
-                        .Where(c => c.Text is not null)
-                select issueAllContents.Select(c => c.Text))
-                .SelectMany(v => v).ToList()
-            select new JiraIssueResponse()
-                {
-                Id = issue.Id,
-                Key = issue.Key,
-                Summary = issue.Fields.Summary,
-                Description = textValues //string.Join(Environment.NewLine, textValues)
-                };
-
-        return query.ToList();
+        var jiraIssueResponses = _mapper.Map<List<JiraIssueResponse>>(shortIssues);
+        _logger.LogDebug("Mapping and flattening issues into JiraIssueResponse objects [{@Issues}]", jiraIssueResponses);
+        
+        return jiraIssueResponses;
     }
 
     public async Task<JiraIssueResponse> GetIssue(string issueKey)
@@ -80,11 +68,16 @@ public class JiraClientService : IJiraClientService
         var jqlString = $"issue={HttpUtility.UrlEncode(issueKey)}&fields=summary,description";
         
         var fullIssue = await _jira.RestClient.ExecuteRequestAsync(RestSharp.Method.GET,
-            $"{_jiraPath}/search?jql={jqlString}");
+            $"{JiraPath}/search?jql={jqlString}");
+        _logger.LogDebug("Receiving information on JIRA issue by specified issue key [{Key}]", issueKey);
 
-        var shortIssue = JsonConvert.DeserializeObject<JqlSearch>(fullIssue.ToString());
+        var shortIssue = JsonConvert.DeserializeObject<JqlSearchResult>(fullIssue.ToString());
+        _logger.LogDebug("Deserializing into JqlSearch, issue [{@Issue}]", shortIssue);
 
-        return MapIssues(shortIssue).First();
+        var jiraIssueResponse = _mapper.Map<List<JiraIssueResponse>>(shortIssue).First();
+        _logger.LogDebug("Mapping and flattening issues into JiraIssueResponse objects [{@Issues}]", jiraIssueResponse);
+        
+        return jiraIssueResponse;
     }
     
     public bool JiraProjectKeyExists(string projectKey)
