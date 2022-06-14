@@ -31,7 +31,7 @@ public record JiraIssue(
    Fields Fields
 );
 
-public record JqlSearch(
+public record JqlSearchResult(
    int Total,
    IReadOnlyList<JiraIssue> Issues
 );
