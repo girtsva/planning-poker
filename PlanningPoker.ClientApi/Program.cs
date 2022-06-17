@@ -1,14 +1,17 @@
 using System.Reflection;
+using Atlassian.Jira;
 using AutoMapper;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using PlanningPoker.Common.Options;
 using PlanningPoker.Data;
 using PlanningPoker.Data.Interfaces;
 using PlanningPoker.Services;
 using PlanningPoker.Services.HealthChecks;
 using PlanningPoker.Services.Interfaces;
+using PlanningPoker.Services.JiraClient;
 using PlanningPoker.Services.Mapping;
 using Serilog;
 
@@ -47,7 +50,10 @@ try
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         options.IncludeXmlComments(xmlPath);
     });
-
+    
+    // Jira connection settings
+    builder.Services.Configure<JiraConnection>(builder.Configuration.GetSection(nameof(JiraConnection)));
+    
     builder.Services.AddDbContext<PlanningPokerDbContext>(options =>
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("PlanningPoker"));
@@ -59,6 +65,7 @@ try
     builder.Services.AddTransient<IPlayerService, PlayerService>();
     builder.Services.AddTransient<IDataRepository, DataRepository>();
     builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
+    builder.Services.AddTransient<IJiraClientService, JiraClientService>();
     //builder.Services.AddSingleton<IDataRepository, DataRepository>();
     //builder.Services.AddScoped<IDataRepository, DataRepository>();
 
