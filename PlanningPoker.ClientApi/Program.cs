@@ -88,6 +88,8 @@ try
     });
     
     app.Services.GetService<IMapper>()!.ConfigurationProvider.AssertConfigurationIsValid();
+    
+    app.UseSerilogRequestLogging();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -104,14 +106,14 @@ try
                     .AllowCredentials()
                     .Build();
             });
+        app.UseExceptionHandler("/error-development");
     }
     else
     {
         app.UseHttpsRedirection();
+        app.UseExceptionHandler("/error");
     }
     
-    app.UseSerilogRequestLogging();
-
     app.UseAuthorization();
 
     app.MapControllers();
