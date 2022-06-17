@@ -1,6 +1,8 @@
 using System.Reflection;
-using Atlassian.Jira;
 using AutoMapper;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,23 @@ try
 
     builder.Host.UseSerilog((ctx, lc) => lc
         .ReadFrom.Configuration(ctx.Configuration));
+
+    // Azure Key Vault configuration
+    builder.Host.ConfigureAppConfiguration((context, config) =>
+    {
+        var builtConfiguration = config.Build();
+
+        string kvUrl = builtConfiguration["KeyVaultConfig:KvURL"];
+        string tenantId = builtConfiguration["KeyVaultConfig:TenantId"];
+        string clientId = builtConfiguration["KeyVaultConfig:ClientId"];
+        string clientSecret = builtConfiguration["KeyVaultConfig:ClientSecretId"];
+
+        var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+
+        var client = new SecretClient(new Uri(kvUrl), credential);
+        config.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
+    });
+        
 
     // Add services to the container.
     builder.Services.AddHealthChecks()
