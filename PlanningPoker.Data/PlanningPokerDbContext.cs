@@ -5,7 +5,13 @@ namespace PlanningPoker.Data;
 
 public class PlanningPokerDbContext : DbContext
 {
+    //private string? ConnectionString { get; }
     public PlanningPokerDbContext(DbContextOptions<PlanningPokerDbContext> options) : base(options) { }
+
+    // public PlanningPokerDbContext(string connectionString)
+    // {
+    //     ConnectionString = connectionString;
+    // }
     
     public DbSet<GameRoom> GameRooms { get; set; }
     public DbSet<Player> Players { get; set; }
@@ -16,6 +22,13 @@ public class PlanningPokerDbContext : DbContext
         optionsBuilder
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
+
+        // if (ConnectionString is not null)
+        // {
+        //     optionsBuilder
+        //         .UseSqlServer(ConnectionString);
+        // }
+            
     }
     
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
