@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using PlanningPoker.Models;
 
 namespace PlanningPoker.Data;
 
+[SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Global")]
 public class PlanningPokerDbContext : DbContext
 {
     //private string? ConnectionString { get; }
@@ -13,9 +15,9 @@ public class PlanningPokerDbContext : DbContext
     //     ConnectionString = connectionString;
     // }
     
-    public DbSet<GameRoom> GameRooms { get; set; }
-    public DbSet<Player> Players { get; set; }
-    public DbSet<PlayerVote> PlayerVotes { get; set; }
+    public DbSet<GameRoom> GameRooms => Set<GameRoom>();
+    public DbSet<Player> Players => Set<Player>();
+    public DbSet<PlayerVote> PlayerVotes => Set<PlayerVote>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
