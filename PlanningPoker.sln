@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Common", "Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Services.JiraClient", "PlanningPoker.Services.JiraClient\PlanningPoker.Services.JiraClient.csproj", "{DEDF4113-3168-47FA-903F-3BEFE0C483D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Services.ParseFile", "PlanningPoker.Services.ParseFile\PlanningPoker.Services.ParseFile.csproj", "{B6CC4C4F-0852-4D72-B914-B245FEFD18EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,5 +79,9 @@ Global
 		{DEDF4113-3168-47FA-903F-3BEFE0C483D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEDF4113-3168-47FA-903F-3BEFE0C483D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEDF4113-3168-47FA-903F-3BEFE0C483D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6CC4C4F-0852-4D72-B914-B245FEFD18EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6CC4C4F-0852-4D72-B914-B245FEFD18EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6CC4C4F-0852-4D72-B914-B245FEFD18EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6CC4C4F-0852-4D72-B914-B245FEFD18EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

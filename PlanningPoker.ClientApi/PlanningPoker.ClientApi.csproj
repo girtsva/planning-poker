@@ -39,6 +39,7 @@
         <ProjectReference Include="..\PlanningPoker.Data\PlanningPoker.Data.csproj" />
         <ProjectReference Include="..\PlanningPoker.Services.Interfaces\PlanningPoker.Services.Interfaces.csproj" />
         <ProjectReference Include="..\PlanningPoker.Services.JiraClient\PlanningPoker.Services.JiraClient.csproj" />
+        <ProjectReference Include="..\PlanningPoker.Services.ParseFile\PlanningPoker.Services.ParseFile.csproj" />
         <ProjectReference Include="..\PlanningPoker.Services\PlanningPoker.Services.csproj" />
         <ProjectReference Include="..\PlanningPoker.Validation\PlanningPoker.Validation.csproj" />
     </ItemGroup>
